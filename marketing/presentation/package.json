@@ -1,0 +1,11 @@
+{
+  "name": "createkids-visual-presentation",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node build_deck.js"
+  },
+  "dependencies": {
+    "pptxgenjs": "4.0.1"
+  }
+}

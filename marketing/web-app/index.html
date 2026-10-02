@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171b23">
+  <meta name="description" content="CreateKids — семейная лаборатория творчества для детей 7 и 14 лет.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/src/styles.css">
+  <title>CreateKids — семейная лаборатория творчества</title>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Перейти к содержанию</a>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="CreateKids — на главную">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
+      <span>CREATEKIDS</span>
+    </a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="#program">12 недель</a>
+      <a href="#principles">Принципы</a>
+      <a href="#rhythm">Ритм</a>
+    </nav>
+    <span class="privacy-badge"><span aria-hidden="true">●</span> Данные только на этом устройстве</span>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow">Семейная лаборатория творчества · 7 и 14 лет</p>
+        <h1>Визионеры —<br><span>вот кто ваши дети</span></h1>
+        <p class="hero-lead">Не угадывать будущую профессию. Создать среду, где ребёнок замечает, придумывает, пробует и находит собственную траекторию.</p>
+        <div class="hero-actions">
+          <button class="button button-primary" id="hero-start" type="button">Начать первую неделю <span aria-hidden="true">↗</span></button>
+          <a class="button button-ghost" href="#program">Посмотреть программу</a>
+        </div>
+        <ul class="hero-facts" aria-label="Ключевые особенности">
+          <li><strong>12</strong><span>творческих<br>недель</span></li>
+          <li><strong>3</strong><span>формата:<br>7 · 14 · семья</span></li>
+          <li><strong>0</strong><span>оценок<br>и сравнений</span></li>
+        </ul>
+      </div>
+
+      <div class="hero-stage" aria-label="Иллюстрация творческой траектории">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="creative-node node-draw"><span>⌁</span><small>рисунок</small></div>
+        <div class="creative-node node-sound"><span>◉</span><small>звук</small></div>
+        <div class="creative-node node-story"><span>Aa</span><small>история</small></div>
+        <div class="creative-node node-code"><span>{ }</span><small>digital</small></div>
+        <div class="vision-core">
+          <span class="core-ring"></span>
+          <strong>идея</strong>
+          <small>первая версия</small>
+        </div>
+        <svg class="path-doodle" viewBox="0 0 640 700" aria-hidden="true">
+          <path d="M72 610 C130 540 105 465 195 430 S325 435 318 335 S440 265 540 105" />
+        </svg>
+        <span class="spark spark-a">✦</span>
+        <span class="spark spark-b">✷</span>
+        <span class="spark spark-c">◇</span>
+      </div>
+    </section>
+
+    <section class="progress-section" aria-labelledby="progress-heading">
+      <div class="progress-copy">
+        <p class="eyebrow eyebrow-light">Ваш пилот</p>
+        <h2 id="progress-heading">Двигайтесь в своём ритме</h2>
+        <p>Пропуск не считается провалом. Следующая неделя — это приглашение, а не обязательство.</p>
+      </div>
+      <div class="progress-card">
+        <div class="progress-topline">
+          <div><span id="progress-value">0 из 12</span><small>недель исследовано</small></div>
+          <strong id="progress-percent">0%</strong>
+        </div>
+        <div class="progress-track" role="progressbar" aria-label="Прогресс программы" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span id="progress-bar"></span>
+        </div>
+        <button class="current-week" id="current-week-button" type="button">
+          <span class="current-week-index">01</span>
+          <span><small>Следующая остановка</small><strong id="current-week-title">Наблюдать и замечать</strong></span>
+          <span class="current-week-arrow" aria-hidden="true">→</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="program-section" id="program" aria-labelledby="program-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Карта исследования</p>
+          <h2 id="program-heading">12 недель, чтобы увидеть свою траекторию</h2>
+        </div>
+        <p>Проба → ремикс → личный проект → выбор продолжения</p>
+      </div>
+
+      <div class="filter-bar" role="group" aria-label="Фильтр недель">
+        <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Все недели</button>
+        <button class="filter-button" type="button" data-filter="open" aria-pressed="false">В процессе</button>
+        <button class="filter-button" type="button" data-filter="done" aria-pressed="false">Исследовано</button>
+      </div>
+
+      <div class="program-grid" id="program-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="principles-section" id="principles" aria-labelledby="principles-heading">
+      <div class="principles-intro">
+        <p class="eyebrow eyebrow-light">Не школа после школы</p>
+        <h2 id="principles-heading">Главный сигнал — хочется вернуться</h2>
+        <p>Мы не определяем талант и не сравниваем детей. Мы замечаем инициативу, внимание, эксперимент и желание продолжать.</p>
+      </div>
+      <div class="principles-grid">
+        <article class="principle-card card-coral">
+          <span>01</span><i aria-hidden="true">✦</i>
+          <h3>Свобода выбора</h3>
+          <p>Ребёнок выбирает вариант, материал и то, чем готов делиться.</p>
+        </article>
+        <article class="principle-card card-sky">
+          <span>02</span><i aria-hidden="true">↝</i>
+          <h3>Первая версия</h3>
+          <p>Начать быстро важнее, чем сразу придумать идеальную работу.</p>
+        </article>
+        <article class="principle-card card-lime">
+          <span>03</span><i aria-hidden="true">◉</i>
+          <h3>Описание процесса</h3>
+          <p>«Я заметил, что ты изменил решение» вместо оценки и ярлыка.</p>
+        </article>
+        <article class="principle-card card-paper">
+          <span>04</span><i aria-hidden="true">◇</i>
+          <h3>Отдельное авторство</h3>
+          <p>Старший ребёнок не становится постоянным учителем младшего.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="rhythm-section" id="rhythm" aria-labelledby="rhythm-heading">
+      <div class="section-heading rhythm-heading">
+        <div>
+          <p class="eyebrow">Реалистичная неделя</p>
+          <h2 id="rhythm-heading">Личное пространство + семейная лаборатория</h2>
+        </div>
+        <p>Всего около 60–100 минут семейного времени. Не нужно догонять пропущенное.</p>
+      </div>
+      <div class="rhythm-line" aria-label="Рекомендуемый недельный ритм">
+        <article class="rhythm-point rhythm-coral"><strong>20–30 мин</strong><span>сын · 7 лет</span><small>игра и быстрый результат</small></article>
+        <article class="rhythm-point rhythm-paper"><strong>45–75 мин</strong><span>дочь · 14 лет</span><small>личный авторский проект</small></article>
+        <article class="rhythm-point rhythm-lime"><strong>45–90 мин</strong><span>семья</span><small>общая лаборатория</small></article>
+        <article class="rhythm-point rhythm-sky"><strong>5 мин</strong><span>рефлексия</span><small>что хочется повторить</small></article>
+      </div>
+    </section>
+
+    <section class="closing-section">
+      <div>
+        <p class="eyebrow eyebrow-light">Будущее начинается с первой версии</p>
+        <h2>Дайте идее появиться.</h2>
+      </div>
+      <button class="button button-light" id="closing-start" type="button">Открыть текущую неделю <span aria-hidden="true">→</span></button>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i></span><span>CREATEKIDS</span></a>
+    <p>Семейная лаборатория творчества · локальное приложение без аккаунта и аналитики.</p>
+    <button class="text-button" id="reset-progress" type="button">Сбросить локальные данные</button>
+  </footer>
+
+  <dialog class="week-dialog" id="week-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-shell">
+      <button class="dialog-close" id="dialog-close" type="button" aria-label="Закрыть">×</button>
+      <header class="dialog-header">
+        <div class="dialog-number" id="dialog-number">01</div>
+        <div>
+          <p class="eyebrow" id="dialog-label">Неделя 1</p>
+          <h2 id="dialog-title">Наблюдать и замечать</h2>
+          <p id="dialog-skill"></p>
+        </div>
+      </header>
+
+      <div class="audience-tabs" role="tablist" aria-label="Формат занятия">
+        <button role="tab" aria-selected="true" data-audience="younger" type="button">7 лет</button>
+        <button role="tab" aria-selected="false" data-audience="teen" type="button">14 лет</button>
+        <button role="tab" aria-selected="false" data-audience="family" type="button">Вместе</button>
+      </div>
+
+      <section class="activity-panel" aria-live="polite">
+        <p class="activity-kicker" id="activity-kicker">Задание для 7 лет</p>
+        <h3 id="activity-text"></h3>
+        <div class="activity-meta">
+          <div><span>Результат</span><p id="activity-artifact"></p></div>
+          <div><span>Подсказка взрослому</span><p id="activity-tip"></p></div>
+        </div>
+      </section>
+
+      <section class="observation-section" aria-labelledby="observation-title">
+        <div class="observation-heading">
+          <div><p class="eyebrow">Личные заметки</p><h3 id="observation-title">Что вы заметили?</h3></div>
+          <span id="save-status" aria-live="polite">Сохраняется на устройстве</span>
+        </div>
+        <div class="observation-grid">
+          <article class="observation-card" data-person-card="younger">
+            <h4><span class="person-dot coral-dot"></span>Сын · 7 лет</h4>
+            <label for="note-younger">Наблюдение без оценки</label>
+            <textarea id="note-younger" data-note="younger" rows="3" placeholder="Например: сам предложил вторую версию…"></textarea>
+            <span class="field-label">Хочется ли повторить?</span>
+            <div class="feeling-list" data-feelings="younger"></div>
+          </article>
+          <article class="observation-card" data-person-card="teen">
+            <h4><span class="person-dot sky-dot"></span>Дочь · 14 лет</h4>
+            <label for="note-teen">Наблюдение без оценки</label>
+            <textarea id="note-teen" data-note="teen" rows="3" placeholder="Например: долго выбирала композицию…"></textarea>
+            <span class="field-label">Хочется ли повторить?</span>
+            <div class="feeling-list" data-feelings="teen"></div>
+          </article>
+        </div>
+      </section>
+
+      <div class="dialog-actions">
+        <button class="button button-ghost" id="dialog-previous" type="button">← Предыдущая</button>
+        <button class="button button-primary" id="complete-week" type="button">Отметить как исследованную</button>
+        <button class="button button-ghost" id="dialog-next" type="button">Следующая →</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
