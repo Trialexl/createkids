@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "node build_deck.js"
+    "build": "node build_deck.js",
+    "build:product": "node build_product_deck.js"
   },
   "dependencies": {
     "pptxgenjs": "4.0.1"
