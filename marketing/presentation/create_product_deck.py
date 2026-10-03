@@ -8,6 +8,10 @@ import fitz
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "product-slides-png"
 OUT.mkdir(parents=True, exist_ok=True)
+for old in OUT.glob("createkids-product-*.png"):
+    old.unlink()
+for old in OUT.glob("CreateKids-Презентация-проекта-preview.jpg"):
+    old.unlink()
 
 W, H = 1920, 1080
 GRAPHITE = "#171A21"
@@ -27,7 +31,7 @@ FONT_BOLD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 FONT_BLACK = "/System/Library/Fonts/Supplemental/Arial Black.ttf"
 FONT_ITALIC = "/System/Library/Fonts/Supplemental/Georgia Italic.ttf"
 
-random.seed(42)
+random.seed(84)
 
 
 def font(path, size):
@@ -55,9 +59,9 @@ def wrap(draw, text, fnt, width):
         words = para.split()
         line = ""
         for word in words:
-            test = word if not line else f"{line} {word}"
-            if measure(draw, test, fnt)[0] <= width:
-                line = test
+            candidate = word if not line else f"{line} {word}"
+            if measure(draw, candidate, fnt)[0] <= width:
+                line = candidate
             else:
                 if line:
                     lines.append(line)
@@ -72,7 +76,7 @@ def fit_text(draw, text, box, max_size, min_size, fill, face=FONT_BLACK, spacing
     for size in range(max_size, min_size - 1, -2):
         fnt = font(face, size)
         lines = wrap(draw, text, fnt, w)
-        line_h = int(size * 1.12)
+        line_h = int(size * 1.13)
         total = len(lines) * line_h + max(0, len(lines) - 1) * spacing
         if total <= h:
             yy = y
@@ -88,12 +92,12 @@ def base(bg, number, dark=False):
     d = ImageDraw.Draw(im)
     fg = WHITE if dark else INK
     d.text((92, 54), "CREATEKIDS", font=font(FONT_BLACK, 26), fill=fg)
-    d.text((1828, 58), f"{number:02d}/15", font=font(FONT_BOLD, 22), fill=fg, anchor="ra")
+    d.text((1828, 58), f"{number:02d}/14", font=font(FONT_BOLD, 22), fill=fg, anchor="ra")
     return im, d
 
 
 def title(draw, text, color=INK, sub=None, sub_color=None, max_size=72):
-    bottom = fit_text(draw, text, (95, 118, 1640, 185), max_size, 44, color)
+    bottom = fit_text(draw, text, (95, 118, 1650, 185), max_size, 42, color)
     if sub:
         draw.text((99, bottom + 12), sub, font=font(FONT_BOLD, 31), fill=sub_color or color)
 
@@ -101,9 +105,9 @@ def title(draw, text, color=INK, sub=None, sub_color=None, max_size=72):
 def card(draw, box, fill, heading, body="", heading_color=INK, body_color=INK, radius=34, outline=None):
     x, y, w, h = box
     draw.rounded_rectangle((x, y, x + w, y + h), radius=radius, fill=fill, outline=outline, width=4 if outline else 1)
-    fit_text(draw, heading, (x + 28, y + 24, w - 56, 80), 31, 22, heading_color, FONT_BLACK, 4)
+    fit_text(draw, heading, (x + 28, y + 25, w - 56, 82), 31, 21, heading_color, FONT_BLACK, 4)
     if body:
-        fit_text(draw, body, (x + 28, y + 116, w - 56, h - 138), 25, 18, body_color, FONT_REG, 7)
+        fit_text(draw, body, (x + 28, y + 118, w - 56, h - 142), 25, 18, body_color, FONT_REG, 7)
 
 
 def pill(draw, xy, text, bg, fg=INK, size=24):
@@ -137,91 +141,155 @@ def save(im, number):
     im.convert("RGB").save(OUT / f"createkids-product-{number:02d}.png", quality=96)
 
 
-# 01 — Cover
+# 01 — Cover: founder story
 im, d = base(GRAPHITE, 1, True)
-fit_text(d, "БУДУЩЕЕ НЕЛЬЗЯ\nПРЕДСКАЗАТЬ.", (94, 145, 1040, 260), 80, 58, WHITE)
-fit_text(d, "СПОСОБНОСТЬ СОЗДАВАТЬ\nМОЖНО РАЗВИВАТЬ.", (94, 430, 1220, 230), 65, 48, LIME)
-d.text((100, 735), "CreateKids — семейное приложение для детей 6–15 лет", font=font(FONT_BOLD, 30), fill="#DADCE2")
-d.text((100, 792), "12 недель творческих экспериментов • без оценок • с реальными проектами", font=font(FONT_REG, 25), fill="#B9BCC4")
-for cx, cy, color, label in [(1450, 265, CORAL, "?"), (1645, 495, SKY, "+") , (1380, 720, LIME, "→")]:
-    d.ellipse((cx - 105, cy - 105, cx + 105, cy + 105), fill=color, outline=WHITE, width=5)
-    d.text((cx, cy - 6), label, font=font(FONT_BLACK, 70), fill=INK, anchor="mm")
-hand_line(d, [(1280, 890), (1430, 790), (1510, 850), (1640, 735), (1790, 800)], WHITE, 9, 1)
-d.text((100, 965), "Идея проекта • продукт • модель запуска", font=font(FONT_BOLD, 24), fill=CORAL)
+fit_text(d, "ПОЧЕМУ МЫ СДЕЛАЛИ\nCREATEKIDS", (94, 155, 1160, 265), 82, 58, WHITE)
+fit_text(d, "История двух родителей, двух очень разных детей и одного вопроса о будущем", (98, 485, 1120, 180), 39, 29, LIME, FONT_BOLD, 8)
+d.text((100, 900), "Не продуктовый питч. Наша семейная история.", font=font(FONT_BOLD, 28), fill="#D7D9DF")
+# Two distinct creative paths from one home.
+d.rounded_rectangle((1400, 400, 1580, 610), radius=30, fill=PAPER, outline=WHITE, width=5)
+d.polygon([(1370, 410), (1490, 305), (1610, 410)], fill=CORAL, outline=WHITE)
+d.rectangle((1460, 515, 1520, 610), fill=SKY)
+hand_line(d, [(1490, 650), (1370, 760), (1230, 725), (1120, 835)], CORAL, 12, 1)
+hand_line(d, [(1490, 650), (1620, 745), (1745, 690), (1820, 830)], LIME, 12, 2)
+for x, y, c, mark in [(1120, 835, CORAL, "7"), (1820, 830, LIME, "14")]:
+    d.ellipse((x - 72, y - 72, x + 72, y + 72), fill=c, outline=WHITE, width=5)
+    d.text((x, y), mark, font=font(FONT_BLACK, 45), fill=INK, anchor="mm")
 save(im, 1)
 
-# 02 — Origin
-im, d = base(PAPER, 2)
-title(d, "МЫ ИСКАЛИ ЭТО ДЛЯ СВОЕЙ СЕМЬИ", CORAL, "И готового маршрута не нашли.", INK)
-card(d, (110, 405, 470, 410), SOFT_CORAL, "СЫН • 7 ЛЕТ", "Короткие игры, движение, материал в руках и быстрый видимый результат.")
-card(d, (675, 385, 570, 450), GRAPHITE, "ОБЩИЙ ВОПРОС", "Как помочь детям попробовать разное, не выбрать за них талант и не превратить творчество в ещё одну школу?", WHITE, WHITE)
-card(d, (1340, 405, 470, 410), SOFT_BLUE, "ДОЧЬ • 14 ЛЕТ", "Собственный стиль, приватность, реальные культурные формы и личный проект.")
-d.text((960, 936), "Так появилась семейная лаборатория CreateKids", font=font(FONT_BLACK, 34), fill=INK, anchor="mm")
-hand_line(d, [(310, 850), (650, 920), (960, 870), (1270, 920), (1600, 850)], SKY, 9, 2)
+# 02 — Section: where the idea came from
+im, d = base(CORAL, 2)
+d.text((98, 160), "ЧАСТЬ 1", font=font(FONT_BLACK, 28), fill=INK)
+fit_text(d, "ОТКУДА\nПОЯВИЛАСЬ ИДЕЯ", (95, 250, 1320, 290), 92, 66, WHITE)
+d.rounded_rectangle((100, 695, 1640, 895), radius=45, fill=PAPER)
+fit_text(d, "Всё началось не с идеи создать приложение. Всё началось с размышлений о будущем наших детей.", (150, 742, 1510, 125), 36, 27, INK, FONT_BOLD, 6)
+star(d, (1635, 315), 125, 52, 9, LIME, INK, 5)
+d.text((1635, 315), "?", font=font(FONT_BLACK, 76), fill=INK, anchor="mm")
 save(im, 2)
 
-# 03 — AI era
-im, d = base(SKY, 3)
-title(d, "ИИ УЖЕ ДАЁТ ГОТОВЫЕ ОТВЕТЫ", INK, "Тем важнее научиться выбирать, зачем и что создавать.", WHITE)
-items = [("НАПИСАТЬ", "текст"), ("НАРИСОВАТЬ", "образ"), ("СОЧИНИТЬ", "музыку"), ("СОБРАТЬ", "код")]
-for i, (a, b) in enumerate(items):
-    y = 430 + i * 125
-    d.rounded_rectangle((105, y, 690, y + 88), radius=28, fill=PAPER if i % 2 == 0 else SOFT_CORAL)
-    d.text((142, y + 44), a, font=font(FONT_BLACK, 27), fill=INK, anchor="lm")
-    d.text((650, y + 44), b, font=font(FONT_REG, 25), fill=MUTED, anchor="rm")
-d.rounded_rectangle((900, 390, 1810, 920), radius=52, fill=GRAPHITE)
-d.text((960, 450), "РОЛЬ РЕБЁНКА", font=font(FONT_BLACK, 27), fill=LIME)
-fit_text(d, "ЗАДАТЬ НАПРАВЛЕНИЕ\nПРИДУМАТЬ ВАРИАНТЫ\nСДЕЛАТЬ ВЫБОР\nПРОВЕРИТЬ И УЛУЧШИТЬ", (960, 520, 760, 300), 47, 35, WHITE, FONT_BLACK, 12)
-d.text((960, 850), "ИИ — инструмент. Ребёнок — автор.", font=font(FONT_BOLD, 29), fill=CORAL)
+# 03 — Two children
+im, d = base(PAPER, 3)
+title(d, "МЫ — РОДИТЕЛИ ДВОИХ ДЕТЕЙ", INK, "И они очень разные.", CORAL)
+card(d, (110, 400, 690, 450), SOFT_CORAL, "СЫНУ 7 ЛЕТ", "Ему важны игра, движение, материал в руках и быстрый результат, который можно сразу показать или разыграть.")
+card(d, (1120, 400, 690, 450), GRAPHITE, "ДОЧЕРИ 14 ЛЕТ", "Ей важны самостоятельность, собственный стиль, уважение к личному пространству и проекты без ощущения «детской поделки».", WHITE, WHITE)
+d.ellipse((835, 515, 1085, 765), fill=SKY, outline=INK, width=6)
+d.text((960, 612), "≠", font=font(FONT_BLACK, 76), fill=INK, anchor="mm")
+d.text((960, 705), "разные пути", font=font(FONT_BOLD, 23), fill=INK, anchor="mm")
+d.text((960, 955), "Одно занятие редко подходит им одинаково.", font=font(FONT_BLACK, 33), fill=INK, anchor="mm")
 save(im, 3)
 
-# 04 — Parent pains
-im, d = base(GRAPHITE, 4, True)
-title(d, "РОДИТЕЛЬ ПОНИМАЕТ ЗАДАЧУ. НО НЕ ЗНАЕТ, С ЧЕГО НАЧАТЬ", WHITE, "Большая тревога превращается в четыре практические проблемы.", LIME, 62)
-problems = [
-    ("КРУЖКИ ВСЛЕПУЮ", "Ребёнок ещё не пробовал достаточно, чтобы осознанно выбрать."),
-    ("РАЗНЫЙ ВОЗРАСТ", "Одно занятие слишком детское для подростка или сложное для младшего."),
-    ("СЛОЖНАЯ ПОДГОТОВКА", "Материалы, сценарий и время приходится придумывать взрослому."),
-    ("ЕЩЁ ОДНА ШКОЛА", "Образец, оценка и сравнение быстро убивают собственный интерес."),
+# 04 — Bet on creativity, not one skill
+im, d = base(SKY, 4)
+title(d, "МЫ РЕШИЛИ СДЕЛАТЬ СТАВКУ НА ТВОРЧЕСТВО", INK, "Но не на один конкретный навык.", WHITE, 62)
+labels = [
+    (170, 510, "РИСОВАНИЕ", CORAL), (505, 410, "МУЗЫКА", PAPER),
+    (855, 520, "ИСТОРИИ", LIME), (1215, 405, "КИНО", SOFT_CORAL),
+    (1530, 535, "КОД", GRAPHITE), (480, 760, "ТЕАТР", GRAPHITE),
+    (1270, 755, "ДИЗАЙН", PAPER),
 ]
-for i, (h, b) in enumerate(problems):
-    x = 100 + (i % 2) * 880
-    y = 420 + (i // 2) * 275
-    card(d, (x, y, 790, 225), CORAL if i == 0 else (PAPER if i == 1 else SKY if i == 2 else LIME), h, b)
-d.text((100, 990), "CreateKids даёт маршрут — но оставляет ребёнку выбор.", font=font(FONT_BLACK, 30), fill=WHITE)
+for x, y, txt, c in labels:
+    fg = WHITE if c == GRAPHITE else INK
+    pill(d, (x, y), txt, c, fg, 25)
+for x, y, *_ in labels:
+    hand_line(d, [(x + 120, y + 55), (960, 790)], "#B7D7E7", 5, x)
+d.ellipse((735, 625, 1185, 955), fill=WHITE, outline=INK, width=6)
+d.text((960, 735), "СПОСОБНОСТЬ", font=font(FONT_BOLD, 25), fill=CORAL, anchor="mm")
+d.text((960, 815), "СОЗДАВАТЬ", font=font(FONT_BLACK, 49), fill=INK, anchor="mm")
+d.text((960, 888), "в разных формах", font=font(FONT_REG, 25), fill=MUTED, anchor="mm")
 save(im, 4)
 
-# 05 — Promise
-im, d = base(PAPER, 5)
-title(d, "НЕ ТЕСТ НА ТАЛАНТ. 12 НЕДЕЛЬ НАБЛЮДЕНИЙ", INK, "Сначала опыт — потом осознанный следующий шаг.", CORAL)
-steps = [
-    ("01", "ПРОБОВАТЬ", "8 способов создавать", CORAL),
-    ("02", "ЗАМЕЧАТЬ", "что выбирает сам", SKY),
-    ("03", "ВОЗВРАЩАТЬСЯ", "без уговоров", LIME),
-    ("04", "УГЛУБЛЯТЬ", "то, где живёт интерес", GRAPHITE),
-]
-for i, (num, h, b, c) in enumerate(steps):
-    x = 100 + i * 450
-    fg = WHITE if c == GRAPHITE else INK
-    d.rounded_rectangle((x, 430, x + 390, 735), radius=42, fill=c)
-    d.text((x + 35, 470), num, font=font(FONT_BLACK, 42), fill=fg)
-    d.text((x + 35, 575), h, font=font(FONT_BLACK, 27), fill=fg)
-    fit_text(d, b, (x + 35, 630, 320, 85), 25, 19, fg, FONT_REG)
-    if i < 3:
-        d.polygon([(x + 404, 565), (x + 438, 585), (x + 404, 605)], fill=INK)
-d.rounded_rectangle((100, 830, 1760, 970), radius=38, fill=SOFT_BLUE)
-d.text((140, 874), "РЕЗУЛЬТАТ", font=font(FONT_BLACK, 24), fill=CORAL)
-d.text((140, 925), "Карта интересов ребёнка вместо догадок о его способностях", font=font(FONT_BLACK, 34), fill=INK)
+# 05 — AI context
+im, d = base(GRAPHITE, 5, True)
+title(d, "МИР ГОТОВЫХ ОТВЕТОВ МЕНЯЕТ РОДИТЕЛЬСКИЙ ВОПРОС", WHITE, "ИИ уже быстро создаёт типовой контент.", LIME, 56)
+answers = [("ТЕКСТ", CORAL), ("ИЗОБРАЖЕНИЕ", SKY), ("МУЗЫКА", LIME), ("КОД", PAPER)]
+for i, (txt, c) in enumerate(answers):
+    x = 110 + i * 405
+    d.rounded_rectangle((x, 420, x + 350, 570), radius=35, fill=c)
+    d.text((x + 175, 495), txt, font=font(FONT_BLACK, 27), fill=INK, anchor="mm")
+hand_line(d, [(180, 690), (520, 635), (820, 730), (1125, 650), (1500, 735), (1780, 665)], SKY, 10, 27)
+questions = ["поставить вопрос", "соединить идеи", "увидеть возможность", "выбрать направление", "довести до результата"]
+for i, txt in enumerate(questions):
+    x = 115 + i * 345
+    y = 790 + (25 if i % 2 else -25)
+    d.ellipse((x, y, x + 34, y + 34), fill=CORAL)
+    fit_text(d, txt, (x + 52, y - 8, 260, 90), 23, 18, WHITE, FONT_BOLD, 4)
+d.text((100, 990), "Нам стало важно не только то, что ребёнок знает, но и то, что он решает создать.", font=font(FONT_BLACK, 28), fill=LIME)
 save(im, 5)
 
-# 06 — Weekly product
-im, d = base(SKY, 6)
-title(d, "КАЖДУЮ НЕДЕЛЮ ПРИЛОЖЕНИЕ УЖЕ ВСЁ ПОДГОТОВИЛО", INK, "Одна тема. Разные роли. Один семейный ритм.", WHITE, 60)
+# 06 — Unknown professions
+im, d = base(PAPER, 6)
+title(d, "МЫ НЕ ЗНАЕМ, КЕМ БУДУТ РАБОТАТЬ НАШИ ДЕТИ", INK, "Честно предсказать профессии через 10–15 лет невозможно.", CORAL, 60)
+# Dissolving signposts.
+for i, (y, txt, c) in enumerate([(420, "ОДНА ПРОФЕССИЯ?", SOFT_CORAL), (575, "ОДИН НАВЫК?", SOFT_BLUE), (730, "ОДИН ПРАВИЛЬНЫЙ ПУТЬ?", SOFT_LIME)]):
+    d.polygon([(110, y), (670, y), (745, y + 55), (670, y + 110), (110, y + 110)], fill=c, outline=INK)
+    d.text((160, y + 55), txt, font=font(FONT_BLACK, 26), fill=INK, anchor="lm")
+    for k in range(6):
+        d.ellipse((760 + k * 35, y + 38 + (k % 2) * 18, 775 + k * 35, y + 53 + (k % 2) * 18), fill="#C4C5C8")
+d.rounded_rectangle((1120, 405, 1800, 875), radius=48, fill=GRAPHITE)
+d.text((1170, 460), "НАША СТАВКА", font=font(FONT_BLACK, 28), fill=LIME)
+fit_text(d, "САМОСТОЯТЕЛЬНО\nМЫСЛИТЬ\nИ СОЗДАВАТЬ", (1170, 560, 550, 250), 52, 39, WHITE, FONT_BLACK, 9)
+d.text((1170, 820), "в разных сценариях будущего", font=font(FONT_REG, 24), fill="#D3D5DB")
+save(im, 6)
+
+# 07 — Section: why it matters
+im, d = base(LIME, 7)
+d.text((98, 160), "ЧАСТЬ 2", font=font(FONT_BLACK, 28), fill=INK)
+fit_text(d, "ПОЧЕМУ ЭТА ИДЕЯ\nСТОИТ ТОГО", (95, 250, 1350, 290), 88, 62, INK)
+d.rounded_rectangle((100, 695, 1660, 895), radius=45, fill=GRAPHITE)
+fit_text(d, "Мы поняли: этот вопрос волнует не только нашу семью.", (150, 748, 1510, 110), 43, 31, WHITE, FONT_BOLD, 6)
+for cx, cy, c in [(1555, 265, CORAL), (1695, 390, SKY), (1480, 490, PAPER)]:
+    d.ellipse((cx - 68, cy - 68, cx + 68, cy + 68), fill=c, outline=INK, width=5)
+    d.text((cx, cy), "?", font=font(FONT_BLACK, 43), fill=INK, anchor="mm")
+save(im, 7)
+
+# 08 — Shared anxiety
+im, d = base(SOFT_BLUE, 8)
+title(d, "МНОГИЕ РОДИТЕЛИ ЧУВСТВУЮТ ТУ ЖЕ ТРЕВОГУ", INK, "Одних знаний и действий по инструкции может быть недостаточно.", CORAL, 58)
+card(d, (105, 420, 520, 410), WHITE, "МЫ ВИДИМ", "Мир меняется быстрее школьных программ. ИИ берёт на себя всё больше готовых операций.")
+card(d, (700, 420, 520, 410), SOFT_CORAL, "МЫ ПОНИМАЕМ", "Самостоятельность, воображение и авторский выбор становятся особенно важны.")
+card(d, (1295, 420, 520, 410), GRAPHITE, "НО НЕ ЗНАЕМ", "Как системно развивать способность создавать дома — регулярно и без давления.", WHITE, WHITE)
+for x in [640, 1235]:
+    d.polygon([(x, 590), (x + 38, 615), (x, 640)], fill=INK)
+d.rounded_rectangle((255, 900, 1665, 995), radius=36, fill=SKY)
+d.text((960, 948), "Тревоге нужен не лозунг, а понятное действие.", font=font(FONT_BLACK, 31), fill=INK, anchor="mm")
+save(im, 8)
+
+# 09 — Four practical problems
+im, d = base(GRAPHITE, 9, True)
+title(d, "НА ПРАКТИКЕ РОДИТЕЛЬ УПИРАЕТСЯ В ЧЕТЫРЕ ПРОБЛЕМЫ", WHITE, "И каждая мешает начать.", LIME, 59)
+problems = [
+    ("ЧТО ПРОБОВАТЬ?", "Направлений много, а ребёнку пока не из чего выбирать.", CORAL),
+    ("КАК СОВМЕСТИТЬ ВОЗРАСТЫ?", "Одно задание не подходит младшему и подростку одинаково.", PAPER),
+    ("КАК ЗАНИМАТЬСЯ РЕГУЛЯРНО?", "Подготовка материалов и сценария снова ложится на родителя.", SKY),
+    ("КАК НЕ СДЕЛАТЬ ЕЩЁ ОДНУ ШКОЛУ?", "Оценки, образцы и правильные ответы убивают желание пробовать.", LIME),
+]
+for i, (h, b, c) in enumerate(problems):
+    x = 100 + (i % 2) * 880
+    y = 405 + (i // 2) * 270
+    card(d, (x, y, 790, 225), c, h, b)
+d.text((960, 985), "Нам нужна была не теория творчества, а семейная практика.", font=font(FONT_BLACK, 29), fill=WHITE, anchor="mm")
+save(im, 9)
+
+# 10 — CreateKids emerges
+im, d = base(PAPER, 10)
+title(d, "ТАК ПОЯВИЛАСЬ ИДЕЯ CREATEKIDS", INK, "Большую тревогу — превратить в понятную семейную практику.", CORAL, 64)
+# Equation from concern to weekly action.
+card(d, (105, 420, 600, 360), SOFT_CORAL, "БОЛЬШОЙ ВОПРОС", "Как подготовить ребёнка к будущему, которого мы сами не можем предсказать?")
+d.ellipse((790, 520, 990, 720), fill=SKY, outline=INK, width=6)
+d.text((890, 620), "→", font=font(FONT_BLACK, 72), fill=INK, anchor="mm")
+card(d, (1075, 420, 735, 360), SOFT_LIME, "ПОНЯТНОЕ ДЕЙСТВИЕ", "Каждую неделю пробовать новый способ создавать — отдельно и вместе.")
+d.rounded_rectangle((260, 875, 1660, 985), radius=38, fill=GRAPHITE)
+d.text((960, 930), "Сначала были семейный вопрос и метод. Приложение появилось потом.", font=font(FONT_BLACK, 28), fill=WHITE, anchor="mm")
+save(im, 10)
+
+# 11 — Weekly rhythm
+im, d = base(SKY, 11)
+title(d, "ОДНА НЕДЕЛЯ — ЧЕТЫРЕ ПОНЯТНЫХ ШАГА", INK, "Одна тема, разные роли и никакого сравнения.", WHITE)
 week = [
-    ("1", "МЛАДШЕМУ", "Короткая игра\n20–30 минут", CORAL),
-    ("2", "ПОДРОСТКУ", "Самостоятельный проект\n45–75 минут", GRAPHITE),
-    ("3", "СЕМЬЕ", "Общая лаборатория\n45–90 минут", LIME),
-    ("4", "ПОСЛЕ", "Фото + 3 вопроса\n5 минут", PAPER),
+    ("1", "МЛАДШЕМУ", "Короткая игра\nи быстрый результат", CORAL),
+    ("2", "ПОДРОСТКУ", "Самостоятельный\nавторский проект", GRAPHITE),
+    ("3", "СЕМЬЕ", "Общая игра\nили лаборатория", LIME),
+    ("4", "ПОСЛЕ", "Сохранить процесс\nи задать 2–3 вопроса", PAPER),
 ]
 for i, (num, h, b, c) in enumerate(week):
     x = 95 + i * 455
@@ -229,200 +297,94 @@ for i, (num, h, b, c) in enumerate(week):
     d.ellipse((x + 110, 390, x + 260, 540), fill=c, outline=WHITE, width=5)
     d.text((x + 185, 465), num, font=font(FONT_BLACK, 46), fill=fg, anchor="mm")
     d.text((x + 185, 590), h, font=font(FONT_BLACK, 27), fill=INK, anchor="mm")
-    fit_text(d, b, (x + 25, 645, 320, 145), 26, 20, INK, FONT_REG, 7)
+    fit_text(d, b, (x + 20, 650, 335, 130), 25, 19, INK, FONT_REG, 7)
     if i < 3:
-        hand_line(d, [(x + 285, 465), (x + 390, 430), (x + 445, 470)], WHITE, 8, i + 10)
-pill(d, (105, 905), "ПОДГОТОВКА ДО 15 МИНУТ", GRAPHITE, WHITE, 26)
-pill(d, (640, 905), "КНОПКА «СДЕЛАТЬ ПРОЩЕ»", SOFT_CORAL, INK, 26)
-pill(d, (1260, 905), "ПРОПУСКИ НЕ ДОГОНЯЕМ", LIME, INK, 26)
-save(im, 6)
-
-# 07 — Screen as guide
-im, d = base(GRAPHITE, 7, True)
-title(d, "ЭКРАН ВЕДЁТ. ТВОРЧЕСТВО ПРОИСХОДИТ В ЖИЗНИ", WHITE, "Приложение не удерживает ребёнка — оно помогает начать.", LIME, 62)
-phases = [
-    (150, "ВЫБРАТЬ", "2–5 минут", "задание • материалы • роль", CORAL),
-    (710, "УБРАТЬ ТЕЛЕФОН", "40–90 минут", "бумага • картон • звук • движение", SKY),
-    (1270, "СОХРАНИТЬ", "5 минут", "фото • настроение • идея версии 2", LIME),
-]
-for i, (x, h, tm, body, c) in enumerate(phases):
-    d.rounded_rectangle((x, 430, x + 500, 790), radius=48, fill=c)
-    d.text((x + 35, 475), f"0{i+1}", font=font(FONT_BLACK, 38), fill=INK)
-    d.text((x + 35, 565), h, font=font(FONT_BLACK, 29), fill=INK)
-    d.text((x + 35, 625), tm, font=font(FONT_BOLD, 27), fill=INK)
-    fit_text(d, body, (x + 35, 690, 420, 80), 23, 18, INK, FONT_REG)
-    if i < 2:
-        d.polygon([(x + 515, 585), (x + 550, 610), (x + 515, 635)], fill=WHITE)
-d.text((960, 925), "Не ещё один экран. Стартовая площадка для реального проекта.", font=font(FONT_BLACK, 31), fill=WHITE, anchor="mm")
-save(im, 7)
-
-# 08 — Eight directions
-im, d = base(PAPER, 8)
-title(d, "8 СПОСОБОВ СОЗДАВАТЬ", INK, "Ребёнок выбирает не из слов, а из собственного опыта.", CORAL)
-directions = [
-    ("РИСУНОК", "линия → образ", CORAL), ("ИСТОРИИ", "слово → мир", SOFT_BLUE),
-    ("МУЗЫКА", "ритм → настроение", LIME), ("КОНСТРУИРОВАНИЕ", "материал → прототип", SOFT_CORAL),
-    ("ТЕАТР", "жест → персонаж", SOFT_CORAL), ("КИНО", "кадр → сюжет", GRAPHITE),
-    ("DIGITAL", "правило → игра", SKY), ("ДИЗАЙН", "нужда → решение", LIME),
-]
-for i, (h, b, c) in enumerate(directions):
-    col, row = i % 4, i // 4
-    x, y = 95 + col * 450, 390 + row * 270
-    fg = WHITE if c == GRAPHITE else INK
-    d.rounded_rectangle((x, y, x + 405, y + 225), radius=34, fill=c)
-    d.text((x + 26, y + 28), f"0{i+1}", font=font(FONT_BLACK, 25), fill=fg)
-    fit_text(d, h, (x + 26, y + 83, 350, 65), 27, 20, fg, FONT_BLACK, 3)
-    d.text((x + 26, y + 184), b, font=font(FONT_REG, 21), fill=fg)
-d.text((100, 1005), "Не один «правильный» талант. Несколько возможных траекторий.", font=font(FONT_BLACK, 29), fill=INK)
-save(im, 8)
-
-# 09 — Ages
-im, d = base(SKY, 9)
-title(d, "РАЗНЫЕ ВОЗРАСТЫ. РАВНОЕ АВТОРСТВО", INK, "Старший не учитель. Младший не исполнитель.", WHITE)
-card(d, (110, 400, 720, 465), SOFT_CORAL, "7 ЛЕТ • ПРОБА", "Короткая материальная задача. Быстрый результат. Можно рассказать, разыграть и переделать.")
-card(d, (1090, 400, 720, 465), GRAPHITE, "14 ЛЕТ • ПОЗИЦИЯ", "Реальная форма: постер, трек, видео, цифровой проект. Собственный стиль и приватное пространство.", WHITE, WHITE)
-d.ellipse((845, 515, 1075, 745), fill=LIME, outline=INK, width=6)
-d.text((960, 610), "+", font=font(FONT_BLACK, 72), fill=INK, anchor="mm")
-d.text((960, 690), "ОБЩИЙ\nПРОЕКТ", font=font(FONT_BLACK, 24), fill=INK, anchor="mm", spacing=3)
-d.text((960, 940), "Вместе — не значит одинаково", font=font(FONT_BLACK, 34), fill=INK, anchor="mm")
-save(im, 9)
-
-# 10 — Creative cycle
-im, d = base(GRAPHITE, 10, True)
-title(d, "ТВОРЧЕСТВО — ЭТО ЦИКЛ, А НЕ ОЗАРЕНИЕ", WHITE, "Посмотреть. Выбрать приём. Изменить по-своему. Назвать источник.", LIME, 62)
-cycle = [
-    ("01", "ЗАМЕТИТЬ", CORAL), ("02", "СОБРАТЬ", PAPER), ("03", "ПРИДУМАТЬ", SKY),
-    ("04", "ВЫБРАТЬ", LIME), ("05", "СДЕЛАТЬ", CORAL), ("06", "ИЗМЕНИТЬ", PAPER),
-    ("07", "ПОКАЗАТЬ", SKY),
-]
-points = []
-for i in range(7):
-    x = 150 + i * 260
-    y = 620 + (80 if i % 2 else -70)
-    points.append((x, y))
-hand_line(d, points, "#A9ADB7", 12, 28)
-for (x, y), (num, h, c) in zip(points, cycle):
-    d.ellipse((x - 78, y - 78, x + 78, y + 78), fill=c, outline=WHITE, width=4)
-    d.text((x, y - 8), num, font=font(FONT_BLACK, 32), fill=INK, anchor="mm")
-    d.text((x, y + 128), h, font=font(FONT_BLACK, 22), fill=WHITE, anchor="mm")
-d.rounded_rectangle((110, 900, 1810, 1000), radius=35, fill=CORAL)
-d.text((960, 950), "ПЕРВАЯ ВЕРСИЯ ВАЖНЕЕ ИДЕАЛЬНОЙ ИДЕИ", font=font(FONT_BLACK, 31), fill=WHITE, anchor="mm")
-save(im, 10)
-
-# 11 — Outcomes
-im, d = base(PAPER, 11)
-title(d, "ЧЕРЕЗ 12 НЕДЕЛЬ — НЕ ОЦЕНКА, А ДОКАЗАТЕЛЬСТВА ИНТЕРЕСА", INK, "Семья видит ребёнка в действии.", CORAL, 60)
-outcomes = [
-    ("ПОРТФОЛИО ПРОЦЕССА", "Идеи, черновики, фото, видео, аудио и законченные версии.", SOFT_BLUE),
-    ("ЛЕНТА ИЗМЕНЕНИЙ", "Что ребёнок переделал после неудачи и как развивал замысел.", SOFT_CORAL),
-    ("КАРТА ИНТЕРЕСОВ", "Что выбирал сам, где удерживал внимание и к чему возвращался.", SOFT_LIME),
-    ("СЛЕДУЮЩИЙ МАРШРУТ", "Кружок, наставник, сезон или личный проект — уже не вслепую.", GRAPHITE),
-]
-for i, (h, b, c) in enumerate(outcomes):
-    x = 100 + (i % 2) * 880
-    y = 405 + (i // 2) * 270
-    fg = WHITE if c == GRAPHITE else INK
-    card(d, (x, y, 790, 225), c, h, b, fg, fg)
-d.text((100, 1000), "Главный сигнал: ребёнок хочет вернуться без уговоров.", font=font(FONT_BLACK, 30), fill=CORAL)
+        hand_line(d, [(x + 285, 465), (x + 390, 430), (x + 445, 470)], WHITE, 8, i + 20)
+pill(d, (120, 905), "РИСУНОК", CORAL, INK, 22)
+pill(d, (360, 905), "ИСТОРИИ", PAPER, INK, 22)
+pill(d, (600, 905), "МУЗЫКА", LIME, INK, 22)
+pill(d, (835, 905), "КОНСТРУКЦИИ", SOFT_CORAL, INK, 22)
+pill(d, (1190, 905), "КИНО", GRAPHITE, WHITE, 22)
+pill(d, (1385, 905), "DIGITAL", PAPER, INK, 22)
+pill(d, (1605, 905), "ДИЗАЙН", LIME, INK, 22)
 save(im, 11)
 
-# 12 — Difference
-im, d = base(SOFT_BLUE, 12)
-title(d, "НЕ ЕЩЁ ОДНО ПРИЛОЖЕНИЕ С УРОКАМИ", INK, "Цель — не пройти контент, а найти направление.", CORAL)
-left_x, right_x = 110, 1010
-d.rounded_rectangle((left_x, 365, left_x + 780, 910), radius=42, fill=WHITE)
-d.rounded_rectangle((right_x, 365, right_x + 800, 910), radius=42, fill=GRAPHITE)
-d.text((left_x + 40, 410), "ОБЫЧНЫЙ УРОК", font=font(FONT_BLACK, 31), fill=MUTED)
-d.text((right_x + 40, 410), "CREATEKIDS", font=font(FONT_BLACK, 31), fill=LIME)
-comparisons = [
-    ("Одна техника", "Разные способы творчества"),
-    ("Повторить образец", "Открытая задача"),
-    ("Оценить результат", "Заметить выбор и интерес"),
-    ("Ребёнок один", "Личные + семейные проекты"),
-    ("Пройти программу", "Найти, куда хочется вернуться"),
+# 12 — Interest map after 12 weeks
+im, d = base(PAPER, 12)
+title(d, "ЧЕРЕЗ 12 НЕДЕЛЬ — НЕ ПАЧКА ОДИНАКОВЫХ ПОДЕЛОК", INK, "А карта живого интереса каждого ребёнка.", CORAL, 57)
+trail = [
+    (170, 610, CORAL, "ВЫБРАЛ", "сам"),
+    (500, 760, LIME, "ЗАДЕРЖАЛСЯ", "дольше"),
+    (845, 580, SKY, "ВЕРНУЛСЯ", "без уговоров"),
+    (1190, 760, SOFT_CORAL, "УЛУЧШИЛ", "после неудачи"),
+    (1540, 580, PAPER, "ПОДЕЛИЛСЯ", "с другими"),
 ]
-for i, (a, b) in enumerate(comparisons):
-    y = 500 + i * 78
-    d.text((left_x + 45, y), "—", font=font(FONT_BLACK, 27), fill=CORAL)
-    d.text((left_x + 88, y), a, font=font(FONT_REG, 24), fill=INK)
-    d.text((right_x + 45, y), "+", font=font(FONT_BLACK, 27), fill=LIME)
-    d.text((right_x + 88, y), b, font=font(FONT_BOLD, 24), fill=WHITE)
-d.text((960, 980), "Не искать талант по тесту. Увидеть его в работе.", font=font(FONT_BLACK, 31), fill=INK, anchor="mm")
+hand_line(d, [(x, y) for x, y, *_ in trail], SKY, 14, 33)
+for x, y, c, h, b in trail:
+    d.ellipse((x - 72, y - 72, x + 72, y + 72), fill=c, outline=INK, width=5)
+    star(d, (x, y), 38, 16, 6, INK)
+    d.text((x, y + 118), h, font=font(FONT_BLACK, 24), fill=INK, anchor="mm")
+    d.text((x, y + 158), b, font=font(FONT_REG, 21), fill=MUTED, anchor="mm")
+d.rounded_rectangle((150, 925, 1770, 1015), radius=35, fill=GRAPHITE)
+d.text((960, 970), "Мы не измеряем талант. Мы наблюдаем интерес в действии.", font=font(FONT_BLACK, 29), fill=WHITE, anchor="mm")
 save(im, 12)
 
-# 13 — MVP
-im, d = base(GRAPHITE, 13, True)
-title(d, "MVP: ДОСТАТОЧНО, ЧТОБЫ ПРОВЕРИТЬ ПРИВЫЧКУ СОЗДАВАТЬ", WHITE, "Не количество открытых уроков — а возвращение к следующему проекту.", LIME, 57)
-columns = [
-    ("СТАРТ", ["возраст и время", "12 недель контента", "материалы до 15 минут"], CORAL),
-    ("ПРОЦЕСС", ["пошаговый режим", "таймер", "копилка вдохновения", "источники и приёмы"], SKY),
-    ("РЕЗУЛЬТАТ", ["фото и версии", "короткая рефлексия", "портфолио", "карта интересов"], LIME),
-]
-for i, (h, items, c) in enumerate(columns):
-    x = 105 + i * 600
-    d.rounded_rectangle((x, 400, x + 520, 850), radius=46, fill=c)
-    d.text((x + 35, 445), h, font=font(FONT_BLACK, 32), fill=INK)
-    for j, item in enumerate(items):
-        y = 550 + j * 70
-        d.ellipse((x + 38, y + 5, x + 60, y + 27), fill=INK)
-        d.text((x + 82, y), item, font=font(FONT_BOLD, 24), fill=INK)
-for x, txt in [(150, "СЕМЬЯ НАЧАЛА СЛЕДУЮЩУЮ НЕДЕЛЮ"), (720, "РЕБЁНОК ВЕРНУЛСЯ К ПРОЕКТУ"), (1290, "РОДИТЕЛЮ СТАЛО ЛЕГЧЕ")]:
-    pill(d, (x, 920), txt, PAPER, INK, 19)
+# 13 — What we really want to give
+im, d = base(SOFT_BLUE, 13)
+title(d, "ЧТО МЫ НА САМОМ ДЕЛЕ ХОТИМ ДАТЬ СЕМЬЕ", INK, "Не обещание угадать будущее — а способ действовать уже сейчас.", CORAL, 58)
+not_items = ["НЕ УРОКИ РИСОВАНИЯ", "НЕ ЕЩЁ ОДИН ЭКРАН", "НЕ ТЕСТ НА ПРОФЕССИЮ"]
+for i, txt in enumerate(not_items):
+    x = 105 + i * 590
+    d.rounded_rectangle((x, 400, x + 525, 520), radius=32, fill=WHITE, outline=CORAL, width=5)
+    d.text((x + 262, 460), txt, font=font(FONT_BLACK, 23), fill=MUTED, anchor="mm")
+d.rounded_rectangle((105, 610, 1810, 905), radius=52, fill=GRAPHITE)
+d.text((160, 665), "БЕЗОПАСНОЕ МЕСТО, ГДЕ МОЖНО", font=font(FONT_BLACK, 26), fill=LIME)
+verbs = [("ПРОБОВАТЬ", CORAL), ("БРОСАТЬ", PAPER), ("ПЕРЕДЕЛЫВАТЬ", SKY), ("ОШИБАТЬСЯ", LIME), ("НАХОДИТЬ СВОЁ", SOFT_CORAL)]
+x = 160
+y = 755
+for txt, c in verbs:
+    nx = pill(d, (x, y), txt, c, INK, 24)
+    x = nx + 22
+    if x > 1630:
+        x = 160
+        y += 78
+d.text((960, 985), "Родителю — понятный путь. Ребёнку — право оставаться автором.", font=font(FONT_BLACK, 28), fill=INK, anchor="mm")
 save(im, 13)
 
-# 14 — Launch and model
-im, d = base(SKY, 14)
-title(d, "НАЧАТЬ С БЕСПЛАТНОЙ НЕДЕЛИ — ПРОДОЛЖИТЬ СЕЗОНАМИ", INK, "Ценность становится видна после первого реального проекта.", WHITE, 58)
-# Funnel
-funnel = [
-    (170, 430, 720, "БЕСПЛАТНО", "Неделя 1: наблюдать и замечать", CORAL),
-    (290, 575, 600, "ПОКУПКА", "Полный маршрут на 12 недель", PAPER),
-    (410, 720, 480, "ПОДПИСКА", "Новые тематические сезоны", LIME),
-]
-for x, y, w, h, b, c in funnel:
-    d.polygon([(x, y), (x + w, y), (x + w - 70, y + 105), (x + 70, y + 105)], fill=c, outline=INK)
-    d.text((x + w / 2, y + 34), h, font=font(FONT_BLACK, 26), fill=INK, anchor="mm")
-    d.text((x + w / 2, y + 74), b, font=font(FONT_REG, 21), fill=INK, anchor="mm")
-d.rounded_rectangle((1040, 400, 1785, 885), radius=48, fill=GRAPHITE)
-d.text((1090, 450), "КАНАЛЫ", font=font(FONT_BLACK, 31), fill=LIME)
-channels = ["родительские сообщества", "блогеры и педагоги", "творческие школы", "музеи и фестивали", "истории семей и карточки проектов"]
-for i, item in enumerate(channels):
-    y = 550 + i * 62
-    d.text((1095, y), "→", font=font(FONT_BLACK, 25), fill=CORAL)
-    d.text((1140, y), item, font=font(FONT_BOLD, 24), fill=WHITE)
-d.text((1045, 940), "Органическое распространение — без рейтингов детских работ", font=font(FONT_BOLD, 24), fill=INK)
+# 14 — Manifesto
+im, d = base(GRAPHITE, 14, True)
+fit_text(d, "МЫ НЕ ХОТИМ РЕШАТЬ ЗА ДЕТЕЙ,\nВ ЧЁМ ИХ ТАЛАНТ.", (95, 150, 1470, 245), 70, 49, WHITE)
+fit_text(d, "МЫ ХОТИМ СОЗДАТЬ УСЛОВИЯ,\nВ КОТОРЫХ ОНИ СМОГУТ ЭТО ОБНАРУЖИТЬ.", (95, 455, 1580, 220), 55, 40, LIME)
+d.rounded_rectangle((100, 780, 1815, 945), radius=45, fill=PAPER)
+d.text((145, 825), "CREATEKIDS", font=font(FONT_BLACK, 27), fill=CORAL)
+d.text((145, 885), "Будущее нельзя предсказать. Способность создавать можно развивать.", font=font(FONT_BLACK, 31), fill=INK)
+# Two diverging paths.
+hand_line(d, [(1640, 260), (1530, 350), (1600, 455), (1490, 570)], CORAL, 12, 51)
+hand_line(d, [(1640, 260), (1750, 360), (1690, 480), (1810, 590)], SKY, 12, 52)
+for x, y, c in [(1490, 570, CORAL), (1810, 590, SKY)]:
+    star(d, (x, y), 72, 31, 7, c, WHITE, 4)
 save(im, 14)
 
-# 15 — Final
-im, d = base(GRAPHITE, 15, True)
-fit_text(d, "НЕ РЕШАЙТЕ ЗА РЕБЁНКА,\nВ ЧЁМ ЕГО ТАЛАНТ.", (95, 155, 1400, 240), 73, 52, WHITE)
-fit_text(d, "ПОМОГИТЕ ЕМУ ЭТО ОБНАРУЖИТЬ.", (95, 440, 1500, 140), 59, 45, LIME)
-d.rounded_rectangle((100, 690, 1780, 845), radius=44, fill=PAPER)
-d.text((145, 735), "CREATEKIDS", font=font(FONT_BLACK, 27), fill=CORAL)
-d.text((145, 790), "12 недель, чтобы попробовать, переделать и найти своё", font=font(FONT_BLACK, 34), fill=INK)
-d.rounded_rectangle((100, 900, 700, 1000), radius=42, fill=CORAL)
-d.text((400, 950), "НАЧАТЬ ПЕРВУЮ НЕДЕЛЮ", font=font(FONT_BLACK, 26), fill=WHITE, anchor="mm")
-star(d, (1640, 320), 135, 58, 9, SKY, WHITE, 5)
-d.text((1640, 320), "А ЧТО,\nЕСЛИ?", font=font(FONT_BLACK, 31), fill=INK, anchor="mm", spacing=2)
-save(im, 15)
-
-# Contact sheet
+# Contact sheet — 5 columns, 3 rows.
 thumb_w, thumb_h = 384, 216
 margin = 22
 sheet = Image.new("RGB", (thumb_w * 5 + margin * 6, thumb_h * 3 + margin * 4), "#D7D8DB")
-for i in range(1, 16):
-    img = Image.open(OUT / f"createkids-product-{i:02d}.png").resize((thumb_w, thumb_h), Image.Resampling.LANCZOS)
+for i in range(1, 15):
+    image = Image.open(OUT / f"createkids-product-{i:02d}.png").resize((thumb_w, thumb_h), Image.Resampling.LANCZOS)
     col, row = (i - 1) % 5, (i - 1) // 5
-    sheet.paste(img, (margin + col * (thumb_w + margin), margin + row * (thumb_h + margin)))
+    sheet.paste(image, (margin + col * (thumb_w + margin), margin + row * (thumb_h + margin)))
 sheet.save(OUT / "CreateKids-Презентация-проекта-preview.jpg", quality=94)
 
-# PDF is generated directly from the exact slide images.
+# Exact-image PDF.
+pdf_path = ROOT / "CreateKids-Презентация-проекта.pdf"
+if pdf_path.exists():
+    pdf_path.unlink()
 pdf = fitz.open()
 page_w, page_h = 13.333 * 72, 7.5 * 72
-for i in range(1, 16):
+for i in range(1, 15):
     image_path = OUT / f"createkids-product-{i:02d}.png"
     page = pdf.new_page(width=page_w, height=page_h)
     page.insert_image(page.rect, filename=str(image_path))
-pdf.save(ROOT / "CreateKids-Презентация-проекта.pdf", deflate=True)
+pdf.save(pdf_path, deflate=True)
 
-print(f"Created 15 slides, preview and PDF in {ROOT}")
+print(f"Created 14 founder-story slides, preview and PDF in {ROOT}")

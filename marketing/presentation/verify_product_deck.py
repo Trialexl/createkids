@@ -33,8 +33,10 @@ checks = {
     "embedded_png": len(media),
     "pdf_pages": len(pdf_doc),
     "rendered_pages": len(renders),
+    "source_has_origin_section": "### Откуда появилась идея" in source,
+    "source_has_value_section": "### Почему эта идея стоит того" in source,
     "source_has_brand_phrase": "Будущее нельзя предсказать. Способность создавать можно развивать." in source,
-    "deck_has_source_reference": "Идеи.md" in text,
+    "deck_has_founder_title": "Почему мы сделали CreateKids" in text,
     "pptx_bytes": pptx.stat().st_size,
     "pdf_bytes": pdf.stat().st_size,
 }
@@ -44,13 +46,15 @@ expected = {
     "pptx_exists": True,
     "pdf_exists": True,
     "preview_exists": True,
-    "pptx_slides": 15,
-    "speaker_notes": 15,
-    "embedded_png": 15,
-    "pdf_pages": 15,
-    "rendered_pages": 15,
+    "pptx_slides": 14,
+    "speaker_notes": 14,
+    "embedded_png": 14,
+    "pdf_pages": 14,
+    "rendered_pages": 14,
+    "source_has_origin_section": True,
+    "source_has_value_section": True,
     "source_has_brand_phrase": True,
-    "deck_has_source_reference": True,
+    "deck_has_founder_title": True,
 }
 for key, value in expected.items():
     if checks[key] != value:
