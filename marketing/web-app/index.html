@@ -20,10 +20,15 @@
     </a>
     <nav class="nav" aria-label="Основная навигация">
       <a href="#program">12 недель</a>
+      <a href="#gallery">Галерея</a>
       <a href="#principles">Принципы</a>
       <a href="#rhythm">Ритм</a>
     </nav>
-    <span class="privacy-badge"><span aria-hidden="true">●</span> Данные только на этом устройстве</span>
+    <div class="account-controls">
+      <span class="privacy-badge" id="account-status"><span aria-hidden="true">●</span> Локальный режим</span>
+      <button class="header-button" id="auth-open" type="button">Войти</button>
+      <button class="header-button" id="logout-button" type="button" hidden>Выйти</button>
+    </div>
   </header>
 
   <main id="main-content">
@@ -104,6 +109,37 @@
       <div class="program-grid" id="program-grid" aria-live="polite"></div>
     </section>
 
+    <section class="gallery-section" id="gallery" aria-labelledby="gallery-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Живые первые версии</p>
+          <h2 id="gallery-heading">Как с заданиями справляются другие</h2>
+        </div>
+        <p>Не образцы «как правильно», а разные способы увидеть и продолжить одну идею.</p>
+      </div>
+      <div class="gallery-auth-cta" id="gallery-auth-cta">
+        <strong>Галерея доступна семейным аккаунтам</strong>
+        <p>Войдите, чтобы видеть опубликованные работы. Авторы остаются анонимными.</p>
+        <button class="button button-primary" id="gallery-login" type="button">Войти или зарегистрироваться</button>
+      </div>
+      <div class="gallery-layout" id="gallery-layout" hidden>
+        <section aria-labelledby="my-results-heading">
+          <div class="gallery-subheading">
+            <h3 id="my-results-heading">Мои работы</h3>
+            <span>Здесь видны и приватные, и опубликованные результаты.</span>
+          </div>
+          <div class="result-grid" id="my-results" aria-live="polite"></div>
+        </section>
+        <section aria-labelledby="community-results-heading">
+          <div class="gallery-subheading">
+            <h3 id="community-results-heading">Галерея семей</h3>
+            <span>Анонимно, без рейтингов, лайков и комментариев.</span>
+          </div>
+          <div class="result-grid" id="gallery-results" aria-live="polite"></div>
+        </section>
+      </div>
+    </section>
+
     <section class="principles-section" id="principles" aria-labelledby="principles-heading">
       <div class="principles-intro">
         <p class="eyebrow eyebrow-light">Не школа после школы</p>
@@ -161,9 +197,31 @@
 
   <footer class="site-footer">
     <a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i></span><span>CREATEKIDS</span></a>
-    <p>Семейная лаборатория творчества · локальное приложение без аккаунта и аналитики.</p>
-    <button class="text-button" id="reset-progress" type="button">Сбросить локальные данные</button>
+    <p>Семейная лаборатория творчества · без аналитики и публичных детских профилей.</p>
+    <button class="text-button" id="reset-progress" type="button">Сбросить прогресс и заметки</button>
   </footer>
+
+  <dialog class="auth-dialog" id="auth-dialog" aria-labelledby="auth-title">
+    <div class="auth-shell">
+      <button class="dialog-close" id="auth-close" type="button" aria-label="Закрыть">×</button>
+      <p class="eyebrow">Семейный аккаунт</p>
+      <h2 id="auth-title">Войти в CreateKids</h2>
+      <p class="auth-lead">Аккаунт хранит прогресс и работы семьи на этом сервере. Детские работы не публикуются автоматически.</p>
+      <div class="auth-modes" role="tablist" aria-label="Режим авторизации">
+        <button type="button" role="tab" aria-selected="true" data-auth-mode="login">Вход</button>
+        <button type="button" role="tab" aria-selected="false" data-auth-mode="register">Регистрация</button>
+      </div>
+      <form id="auth-form">
+        <label for="auth-email">Email родителя</label>
+        <input id="auth-email" name="email" type="email" autocomplete="email" required>
+        <label for="auth-password">Пароль</label>
+        <input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="10" required>
+        <p class="form-hint">Не менее 10 символов. Пароль хранится только в виде защищённого хеша.</p>
+        <p class="form-error" id="auth-error" role="alert" aria-live="polite"></p>
+        <button class="button button-primary" id="auth-submit" type="submit">Войти</button>
+      </form>
+    </div>
+  </dialog>
 
   <dialog class="week-dialog" id="week-dialog" aria-labelledby="dialog-title">
     <div class="dialog-shell">
@@ -176,6 +234,17 @@
           <p id="dialog-skill"></p>
         </div>
       </header>
+
+      <figure class="dialog-slide-frame">
+        <img id="dialog-slide" alt="" decoding="async">
+        <button class="slide-arrow slide-arrow-previous" id="slide-previous" type="button" aria-label="Предыдущая иллюстрация">‹</button>
+        <button class="slide-arrow slide-arrow-next" id="slide-next" type="button" aria-label="Следующая иллюстрация">›</button>
+        <div class="slide-dots" role="group" aria-label="Выбор иллюстрации">
+          <button type="button" data-slide-index="0" aria-label="Первая иллюстрация" aria-pressed="true"></button>
+          <button type="button" data-slide-index="1" aria-label="Вторая иллюстрация" aria-pressed="false"></button>
+          <button type="button" data-slide-index="2" aria-label="Третья иллюстрация" aria-pressed="false"></button>
+        </div>
+      </figure>
 
       <div class="audience-tabs" role="tablist" aria-label="Формат занятия">
         <button role="tab" aria-selected="true" data-audience="younger" type="button">7 лет</button>
@@ -213,6 +282,50 @@
             <div class="feeling-list" data-feelings="teen"></div>
           </article>
         </div>
+      </section>
+
+      <section class="result-section" aria-labelledby="result-title">
+        <div class="result-heading">
+          <div><p class="eyebrow">Результат занятия</p><h3 id="result-title">Сохранить первую версию</h3></div>
+          <span>Работа останется приватной, пока вы сами не опубликуете её.</span>
+        </div>
+        <p class="result-auth-note" id="result-auth-note">Войдите в семейный аккаунт, чтобы сохранить работу.</p>
+        <form id="result-form">
+          <div class="result-fields">
+            <label>Кто выполнял
+              <select id="result-audience" name="audience">
+                <option value="younger">Ребёнок · 7 лет</option>
+                <option value="teen">Подросток · 14 лет</option>
+                <option value="family">Вся семья</option>
+              </select>
+            </label>
+            <label>Фотография результата
+              <input id="result-photo" name="photo" type="file" accept="image/png,image/jpeg,image/webp" required>
+            </label>
+            <div class="photo-preview" id="photo-preview" hidden></div>
+            <label class="field-wide">Что получилось
+              <textarea id="result-description" name="description" rows="3" maxlength="1000" required placeholder="Коротко опишите, что сделали…"></textarea>
+            </label>
+            <label>Как хочется продолжить
+              <select id="result-feeling" name="feeling">
+                <option value="">Не выбрано</option>
+                <option>Хочу ещё</option>
+                <option>Достаточно</option>
+                <option>Хочу иначе</option>
+                <option>Пока не хочу</option>
+              </select>
+            </label>
+            <label>Идея следующей версии
+              <textarea id="result-next-idea" name="nextIdea" rows="2" maxlength="1000" placeholder="Что изменить или попробовать дальше?"></textarea>
+            </label>
+          </div>
+          <label class="publish-choice">
+            <input id="result-publish" name="isPublished" type="checkbox">
+            <span><strong>Показать в галерее</strong><small>Анонимно и только авторизованным семьям. Email и имя ребёнка не показываются.</small></span>
+          </label>
+          <p class="form-error" id="result-error" role="alert" aria-live="polite"></p>
+          <button class="button button-primary" id="result-submit" type="submit">Сохранить работу</button>
+        </form>
       </section>
 
       <div class="dialog-actions">

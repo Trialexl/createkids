@@ -9,6 +9,8 @@ export const weeks = [
     family: 'Собрать музей одного бытового предмета и придумать к нему музейную подпись.',
     artifact: 'Лист персонажей, фотосерия и фотография мини-музея.',
     tip: 'Заведите копилку вдохновения: сохраняйте не всё подряд, а конкретную зацепившую деталь.',
+    image: '/week-slides/alternatives/week-01-watercolor-a.jpg',
+    images: ['/week-slides/week-01.jpg', '/week-slides/alternatives/week-01-watercolor-a.jpg', '/week-slides/alternatives/week-01-watercolor-b.jpg'],
     color: 'coral',
     icon: '✦'
   },
@@ -22,6 +24,8 @@ export const weeks = [
     family: 'По очереди продолжать общий рисунок, не договариваясь о результате.',
     artifact: 'Три варианта до выбора финальной версии.',
     tip: 'Найдите три непохожих референса и возьмите из каждого только один приём.',
+    image: '/week-slides/alternatives/week-02-watercolor-a.jpg',
+    images: ['/week-slides/week-02.jpg', '/week-slides/alternatives/week-02-watercolor-a.jpg', '/week-slides/alternatives/week-02-watercolor-b.jpg'],
     color: 'sky',
     icon: '⌁'
   },
@@ -35,6 +39,8 @@ export const weeks = [
     family: 'Рассказывать историю по одной фразе, затем придумать вторую концовку.',
     artifact: 'Аудиозапись или текст вместе с черновиком.',
     tip: 'Начните с фразы: «Мне не хватает истории, в которой…».',
+    image: '/week-slides/alternatives/week-03-watercolor-a.jpg',
+    images: ['/week-slides/week-03.jpg', '/week-slides/alternatives/week-03-watercolor-a.jpg', '/week-slides/alternatives/week-03-watercolor-b.jpg'],
     color: 'paper',
     icon: 'Aa'
   },
@@ -48,6 +54,8 @@ export const weeks = [
     family: 'Озвучить немую сцену голосом, предметами и собственными звуками.',
     artifact: 'Аудиозапись первой и второй версии.',
     tip: 'Соедините ритм из одного источника, фактуру из второго и форму из третьего.',
+    image: '/week-slides/alternatives/week-04-watercolor-a.jpg',
+    images: ['/week-slides/week-04.jpg', '/week-slides/alternatives/week-04-watercolor-a.jpg', '/week-slides/alternatives/week-04-watercolor-b.jpg'],
     color: 'lime',
     icon: '◉'
   },
@@ -61,6 +69,8 @@ export const weeks = [
     family: 'Собрать машину Голдберга минимум из пяти последовательных действий.',
     artifact: 'Фото прототипов и короткий список изменений.',
     tip: 'Руки до экрана: сначала физическая попытка, затем поиск готовых решений.',
+    image: '/week-slides/alternatives/week-05-watercolor-a.jpg',
+    images: ['/week-slides/week-05.jpg', '/week-slides/alternatives/week-05-watercolor-a.jpg', '/week-slides/alternatives/week-05-watercolor-b.jpg'],
     color: 'soft',
     icon: '◇'
   },
@@ -74,6 +84,8 @@ export const weeks = [
     family: 'Сыграть импровизацию «Да, и…» с необычным местом и задачей.',
     artifact: 'Видео на 1–3 минуты или афиша спектакля.',
     tip: 'Не ждите полной готовности: начните сцену, а характер обнаружится в действии.',
+    image: '/week-slides/alternatives/week-06-watercolor-a.jpg',
+    images: ['/week-slides/week-06.jpg', '/week-slides/alternatives/week-06-watercolor-a.jpg', '/week-slides/alternatives/week-06-watercolor-b.jpg'],
     color: 'coral',
     icon: '◌'
   },
@@ -87,6 +99,8 @@ export const weeks = [
     family: 'Снять один сюжет сначала как комедию, а затем как триллер.',
     artifact: 'Два коротких ролика и раскадровка.',
     tip: 'Повторите один кадр как упражнение, затем измените героя, место и жанр.',
+    image: '/week-slides/alternatives/week-07-watercolor-a.jpg',
+    images: ['/week-slides/week-07.jpg', '/week-slides/alternatives/week-07-watercolor-a.jpg', '/week-slides/alternatives/week-07-watercolor-b.jpg'],
     color: 'paper',
     icon: '▣'
   },
@@ -100,6 +114,8 @@ export const weeks = [
     family: 'Придумать механику игры, где игрок создаёт или помогает, а не сражается.',
     artifact: 'Ссылка или файл проекта и три возможных улучшения.',
     tip: 'Сначала бумажный прототип, затем экран. Автором правил остаётся ребёнок.',
+    image: '/week-slides/alternatives/week-08-watercolor-a.jpg',
+    images: ['/week-slides/week-08.jpg', '/week-slides/alternatives/week-08-watercolor-a.jpg', '/week-slides/alternatives/week-08-watercolor-b.jpg'],
     color: 'sky',
     icon: '{ }'
   },
@@ -113,6 +129,8 @@ export const weeks = [
     family: 'Отвечать на звук рисунком, на рисунок движением, а на движение историей.',
     artifact: 'Творческая цепочка минимум из трёх медиумов.',
     tip: 'Соберите формулу из цвета одного автора, ритма другого и сюжета третьего.',
+    image: '/week-slides/alternatives/week-09-watercolor-a.jpg',
+    images: ['/week-slides/week-09.jpg', '/week-slides/alternatives/week-09-watercolor-a.jpg', '/week-slides/alternatives/week-09-watercolor-b.jpg'],
     color: 'lime',
     icon: '↝'
   },
@@ -126,6 +144,8 @@ export const weeks = [
     family: 'Протестировать прототип без объяснений и записать наблюдения.',
     artifact: 'Проблема, три идеи, прототип и одно улучшение.',
     tip: 'Начинайте не с предмета, а с вопроса: «Чего не хватает этому человеку?».',
+    image: '/week-slides/alternatives/week-10-watercolor-a.jpg',
+    images: ['/week-slides/week-10.jpg', '/week-slides/alternatives/week-10-watercolor-a.jpg', '/week-slides/alternatives/week-10-watercolor-b.jpg'],
     color: 'soft',
     icon: '△'
   },
@@ -139,6 +159,8 @@ export const weeks = [
     family: 'Помогать друг другу только по запросу и сохранить отдельное авторство.',
     artifact: 'Минимум три идеи, план, первая версия и одно улучшение.',
     tip: 'Можно продолжить побочный проект, к которому ребёнок возвращался сам.',
+    image: '/week-slides/alternatives/week-11-watercolor-a.jpg',
+    images: ['/week-slides/week-11.jpg', '/week-slides/alternatives/week-11-watercolor-a.jpg', '/week-slides/alternatives/week-11-watercolor-b.jpg'],
     color: 'coral',
     icon: '✷'
   },
@@ -152,6 +174,8 @@ export const weeks = [
     family: 'Собрать выставку, концерт, показ или закрытую цифровую галерею.',
     artifact: 'Финалы, черновики и карта направлений для продолжения.',
     tip: 'Публичность необязательна. Показывать можно не результат, а найденный приём.',
+    image: '/week-slides/alternatives/week-12-watercolor-a.jpg',
+    images: ['/week-slides/week-12.jpg', '/week-slides/alternatives/week-12-watercolor-a.jpg', '/week-slides/alternatives/week-12-watercolor-b.jpg'],
     color: 'paper',
     icon: '○'
   }

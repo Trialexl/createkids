@@ -4,6 +4,9 @@ node_modules/
 # Build output
 dist/
 
+# Local application data
+marketing/web-app/data/
+
 # Python environments and caches
 .venv/
 venv/

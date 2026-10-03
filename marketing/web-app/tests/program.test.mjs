@@ -25,6 +25,13 @@ test('program contains twelve complete weeks', () => {
     assert.ok(week.family);
     assert.ok(week.artifact);
     assert.ok(week.color);
+    const index = String(week.id).padStart(2, '0');
+    assert.equal(week.image, `/week-slides/alternatives/week-${index}-watercolor-a.jpg`);
+    assert.deepEqual(week.images, [
+      `/week-slides/week-${index}.jpg`,
+      `/week-slides/alternatives/week-${index}-watercolor-a.jpg`,
+      `/week-slides/alternatives/week-${index}-watercolor-b.jpg`
+    ]);
   }
 });
 
