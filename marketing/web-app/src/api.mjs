@@ -25,8 +25,8 @@ export function createApiClient(fetchImpl = globalThis.fetch.bind(globalThis)) {
   }
 
   return {
-    async register(email, password) {
-      return (await request('/api/auth/register', { method: 'POST', body: { email, password } })).user;
+    async register(email, password, children) {
+      return (await request('/api/auth/register', { method: 'POST', body: { email, password, children } })).user;
     },
     async login(email, password) {
       return (await request('/api/auth/login', { method: 'POST', body: { email, password } })).user;
@@ -36,6 +36,9 @@ export function createApiClient(fetchImpl = globalThis.fetch.bind(globalThis)) {
     },
     async getCurrentUser() {
       return (await request('/api/auth/me')).user;
+    },
+    async updateProfile(email, children) {
+      return (await request('/api/profile', { method: 'PATCH', body: { email, children } })).user;
     },
     async getProgress() {
       return request('/api/progress');

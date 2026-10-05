@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#171b23">
-  <meta name="description" content="CreateKids — семейная лаборатория творчества для детей 7 и 14 лет.">
+  <meta name="description" content="CreateKids — семейная лаборатория творчества для семей с детьми от 5 до 17 лет.">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/src/styles.css">
@@ -20,6 +20,7 @@
     </a>
     <nav class="nav" aria-label="Основная навигация">
       <a href="#program">12 недель</a>
+      <a href="#interest-map">Карта интересов</a>
       <a href="#gallery">Галерея</a>
       <a href="#principles">Принципы</a>
       <a href="#rhythm">Ритм</a>
@@ -27,6 +28,7 @@
     <div class="account-controls">
       <span class="privacy-badge" id="account-status"><span aria-hidden="true">●</span> Локальный режим</span>
       <button class="header-button" id="auth-open" type="button">Войти</button>
+      <button class="header-button" id="profile-open" type="button" hidden>Профиль</button>
       <button class="header-button" id="logout-button" type="button" hidden>Выйти</button>
     </div>
   </header>
@@ -34,7 +36,7 @@
   <main id="main-content">
     <section class="hero" id="top">
       <div class="hero-copy">
-        <p class="eyebrow">Семейная лаборатория творчества · 7 и 14 лет</p>
+        <p class="eyebrow">Семейная лаборатория творчества · 5–17 лет</p>
         <h1>Визионеры —<br><span>вот кто ваши дети</span></h1>
         <p class="hero-lead">Не угадывать будущую профессию. Создать среду, где ребёнок замечает, придумывает, пробует и находит собственную траекторию.</p>
         <div class="hero-actions">
@@ -43,7 +45,7 @@
         </div>
         <ul class="hero-facts" aria-label="Ключевые особенности">
           <li><strong>12</strong><span>творческих<br>недель</span></li>
-          <li><strong>3</strong><span>формата:<br>7 · 14 · семья</span></li>
+          <li><strong>1+</strong><span>детей<br>в профиле</span></li>
           <li><strong>0</strong><span>оценок<br>и сравнений</span></li>
         </ul>
       </div>
@@ -107,6 +109,19 @@
       </div>
 
       <div class="program-grid" id="program-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="interest-map-section" id="interest-map" aria-labelledby="interest-map-heading">
+      <div class="interest-map-heading">
+        <div>
+          <p class="eyebrow eyebrow-light">Итог 12 недель</p>
+          <h2 id="interest-map-heading">Карта живого интереса</h2>
+        </div>
+        <p>Не оценка способностей и не прогноз профессии. Карта собирает только то, что семья действительно заметила в процессе.</p>
+      </div>
+      <div class="interest-map-lock" id="interest-map-lock" aria-live="polite"></div>
+      <div class="interest-map-people" id="interest-map-people" aria-live="polite" hidden></div>
+      <p class="interest-map-method">Карта строится из недельных отметок «хочу ещё» и наблюдаемых сигналов: самостоятельного выбора, долгого внимания, возвращения к идее, улучшения версии и желания поделиться.</p>
     </section>
 
     <section class="gallery-section" id="gallery" aria-labelledby="gallery-heading">
@@ -179,8 +194,8 @@
         <p>Всего около 60–100 минут семейного времени. Не нужно догонять пропущенное.</p>
       </div>
       <div class="rhythm-line" aria-label="Рекомендуемый недельный ритм">
-        <article class="rhythm-point rhythm-coral"><strong>20–30 мин</strong><span>сын · 7 лет</span><small>игра и быстрый результат</small></article>
-        <article class="rhythm-point rhythm-paper"><strong>45–75 мин</strong><span>дочь · 14 лет</span><small>личный авторский проект</small></article>
+        <article class="rhythm-point rhythm-coral"><strong>20–30 мин</strong><span>5–10 лет</span><small>игра и быстрый результат</small></article>
+        <article class="rhythm-point rhythm-paper"><strong>45–75 мин</strong><span>11–17 лет</span><small>личный авторский проект</small></article>
         <article class="rhythm-point rhythm-lime"><strong>45–90 мин</strong><span>семья</span><small>общая лаборатория</small></article>
         <article class="rhythm-point rhythm-sky"><strong>5 мин</strong><span>рефлексия</span><small>что хочется повторить</small></article>
       </div>
@@ -217,8 +232,39 @@
         <label for="auth-password">Пароль</label>
         <input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="10" required>
         <p class="form-hint">Не менее 10 символов. Пароль хранится только в виде защищённого хеша.</p>
+        <section class="auth-children" id="auth-children" aria-labelledby="auth-children-title" hidden>
+          <div class="auth-children-heading">
+            <div><strong id="auth-children-title">Дети в семье</strong><small>Для каждого появится своё задание, наблюдения и результаты.</small></div>
+            <button class="child-add-button" id="auth-add-child" type="button">＋ Добавить ребёнка</button>
+          </div>
+          <div class="auth-child-fields" id="auth-child-fields"></div>
+          <p class="form-hint">Возраст от 5 до 17 лет. Имя или псевдоним видно только внутри семейного аккаунта.</p>
+        </section>
         <p class="form-error" id="auth-error" role="alert" aria-live="polite"></p>
         <button class="button button-primary" id="auth-submit" type="submit">Войти</button>
+      </form>
+    </div>
+  </dialog>
+
+  <dialog class="auth-dialog profile-dialog" id="profile-dialog" aria-labelledby="profile-title">
+    <div class="auth-shell">
+      <button class="dialog-close" id="profile-close" type="button" aria-label="Закрыть">×</button>
+      <p class="eyebrow">Настройки семьи</p>
+      <h2 id="profile-title">Профиль семьи</h2>
+      <p class="auth-lead">Измените email, имена и возраст детей. Их заметки, карта интересов и сохранённые работы останутся на месте.</p>
+      <form id="profile-form">
+        <label for="profile-email">Email родителя</label>
+        <input id="profile-email" name="email" type="email" autocomplete="email" required>
+        <section class="auth-children profile-children" aria-labelledby="profile-children-title">
+          <div class="auth-children-heading">
+            <div><strong id="profile-children-title">Дети в семье</strong><small>Можно изменить имя, возраст или добавить ребёнка.</small></div>
+            <button class="child-add-button" id="profile-add-child" type="button">＋ Добавить ребёнка</button>
+          </div>
+          <div class="auth-child-fields" id="profile-child-fields"></div>
+          <p class="form-hint">Удалённый из активного профиля ребёнок архивируется: его прежние работы не стираются.</p>
+        </section>
+        <p class="form-error" id="profile-error" role="alert" aria-live="polite"></p>
+        <button class="button button-primary" id="profile-submit" type="submit">Сохранить изменения</button>
       </form>
     </div>
   </dialog>
@@ -246,85 +292,68 @@
         </div>
       </figure>
 
-      <div class="audience-tabs" role="tablist" aria-label="Формат занятия">
-        <button role="tab" aria-selected="true" data-audience="younger" type="button">7 лет</button>
-        <button role="tab" aria-selected="false" data-audience="teen" type="button">14 лет</button>
-        <button role="tab" aria-selected="false" data-audience="family" type="button">Вместе</button>
-      </div>
+      <div class="audience-tabs" id="audience-tabs" role="tablist" aria-label="Выбор участника"></div>
 
       <section class="activity-panel" aria-live="polite">
         <p class="activity-kicker" id="activity-kicker">Задание для 7 лет</p>
         <h3 id="activity-text"></h3>
         <div class="activity-meta">
-          <div><span>Результат</span><p id="activity-artifact"></p></div>
-          <div><span>Подсказка взрослому</span><p id="activity-tip"></p></div>
+          <div class="activity-output"><span>Результат</span><p id="activity-artifact"></p></div>
+          <div class="activity-tip">
+            <span>Подсказка взрослому</span>
+            <p id="activity-tip"></p>
+            <button class="activity-tip-more" id="adult-guide-open" type="button" aria-haspopup="dialog" aria-controls="adult-guide-dialog">Подробнее →</button>
+          </div>
         </div>
       </section>
 
       <section class="observation-section" aria-labelledby="observation-title">
         <div class="observation-heading">
-          <div><p class="eyebrow">Личные заметки</p><h3 id="observation-title">Что вы заметили?</h3></div>
-          <span id="save-status" aria-live="polite">Сохраняется на устройстве</span>
+          <div><p class="eyebrow">Личная заметка</p><h3 id="observation-title">Что вы заметили?</h3></div>
+          <span id="save-status" aria-live="polite">Заметка сохраняется на устройстве</span>
         </div>
-        <div class="observation-grid">
-          <article class="observation-card" data-person-card="younger">
-            <h4><span class="person-dot coral-dot"></span>Сын · 7 лет</h4>
-            <label for="note-younger">Наблюдение без оценки</label>
-            <textarea id="note-younger" data-note="younger" rows="3" placeholder="Например: сам предложил вторую версию…"></textarea>
-            <span class="field-label">Хочется ли повторить?</span>
-            <div class="feeling-list" data-feelings="younger"></div>
-          </article>
-          <article class="observation-card" data-person-card="teen">
-            <h4><span class="person-dot sky-dot"></span>Дочь · 14 лет</h4>
-            <label for="note-teen">Наблюдение без оценки</label>
-            <textarea id="note-teen" data-note="teen" rows="3" placeholder="Например: долго выбирала композицию…"></textarea>
-            <span class="field-label">Хочется ли повторить?</span>
-            <div class="feeling-list" data-feelings="teen"></div>
-          </article>
-        </div>
+        <div class="observation-grid" id="observation-grid"></div>
       </section>
 
       <section class="result-section" aria-labelledby="result-title">
         <div class="result-heading">
           <div><p class="eyebrow">Результат занятия</p><h3 id="result-title">Сохранить первую версию</h3></div>
-          <span>Работа останется приватной, пока вы сами не опубликуете её.</span>
+          <span id="result-context">Работа останется приватной, пока вы сами не опубликуете её.</span>
         </div>
         <p class="result-auth-note" id="result-auth-note">Войдите в семейный аккаунт, чтобы сохранить работу.</p>
-        <form id="result-form">
+        <form id="result-form" novalidate>
           <div class="result-fields">
-            <label>Кто выполнял
-              <select id="result-audience" name="audience">
-                <option value="younger">Ребёнок · 7 лет</option>
-                <option value="teen">Подросток · 14 лет</option>
-                <option value="family">Вся семья</option>
-              </select>
-            </label>
-            <label>Фотография результата
-              <input id="result-photo" name="photo" type="file" accept="image/png,image/jpeg,image/webp" required>
-            </label>
-            <div class="photo-preview" id="photo-preview" hidden></div>
-            <label class="field-wide">Что получилось
-              <textarea id="result-description" name="description" rows="3" maxlength="1000" required placeholder="Коротко опишите, что сделали…"></textarea>
-            </label>
-            <label>Как хочется продолжить
-              <select id="result-feeling" name="feeling">
-                <option value="">Не выбрано</option>
-                <option>Хочу ещё</option>
-                <option>Достаточно</option>
-                <option>Хочу иначе</option>
-                <option>Пока не хочу</option>
-              </select>
-            </label>
-            <label>Идея следующей версии
-              <textarea id="result-next-idea" name="nextIdea" rows="2" maxlength="1000" placeholder="Что изменить или попробовать дальше?"></textarea>
-            </label>
+            <div class="result-source-column">
+              <label class="result-file-field">
+                <span class="field-caption">Фотография результата</span>
+                <input class="file-input" id="result-photo" name="photo" type="file" accept="image/png,image/jpeg,image/webp" required>
+                <span class="file-picker" aria-hidden="true">
+                  <span class="file-picker-icon">＋</span>
+                  <span class="file-picker-copy">
+                    <strong id="file-picker-name">Добавить фотографию</strong>
+                    <small id="file-picker-meta">PNG, JPEG или WebP · до 5 МБ</small>
+                  </span>
+                </span>
+              </label>
+              <div class="photo-preview" id="photo-preview" hidden></div>
+            </div>
+            <div class="result-story-column">
+              <label>Что получилось
+                <textarea id="result-description" name="description" rows="4" maxlength="1000" required placeholder="Коротко опишите, что сделали…"></textarea>
+              </label>
+              <label>Идея следующей версии
+                <textarea id="result-next-idea" name="nextIdea" rows="3" maxlength="1000" placeholder="Что изменить или попробовать дальше?"></textarea>
+              </label>
+            </div>
           </div>
           <label class="publish-choice">
             <input id="result-publish" name="isPublished" type="checkbox">
             <span><strong>Показать в галерее</strong><small>Анонимно и только авторизованным семьям. Email и имя ребёнка не показываются.</small></span>
           </label>
-          <p class="form-error" id="result-error" role="alert" aria-live="polite"></p>
-          <button class="button button-primary" id="result-submit" type="submit">Сохранить работу</button>
+          <div class="result-form-footer">
+            <p class="form-error" id="result-error" role="alert" aria-live="polite"></p>
+            <button class="button button-primary" id="result-submit" type="submit">Сохранить работу</button>
+          </div>
         </form>
       </section>
 
@@ -334,6 +363,21 @@
         <button class="button button-ghost" id="dialog-next" type="button">Следующая →</button>
       </div>
     </div>
+  </dialog>
+
+  <dialog class="adult-guide-dialog" id="adult-guide-dialog" aria-labelledby="adult-guide-title">
+    <article class="adult-guide-shell">
+      <button class="dialog-close" id="adult-guide-close" type="button" aria-label="Закрыть подробную подсказку">×</button>
+      <p class="eyebrow">Подсказка взрослому</p>
+      <h2 id="adult-guide-title">Как поддержать, не перехватывая авторство</h2>
+      <p class="adult-guide-lead" id="adult-guide-lead"></p>
+      <section aria-labelledby="adult-guide-steps-title">
+        <h3 id="adult-guide-steps-title">Что можно сделать</h3>
+        <ol id="activity-guide-list"></ol>
+      </section>
+      <p class="adult-guide-method"><strong>Методика:</strong> взрослый создаёт безопасные условия, задаёт открытые вопросы и наблюдает. Решение, темп и право остановиться остаются у ребёнка.</p>
+      <button class="button button-primary adult-guide-done" id="adult-guide-done" type="button">Понятно</button>
+    </article>
   </dialog>
 
   <script type="module" src="/src/main.js"></script>

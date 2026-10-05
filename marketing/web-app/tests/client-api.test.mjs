@@ -35,24 +35,41 @@ function createCookieFetch(baseUrl) {
 }
 
 const ONE_PIXEL_PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl2nE0AAAAASUVORK5CYII=';
+const CHILDREN = [{ name: 'Лев', age: 7 }, { name: 'Мира', age: 14 }];
 
 test('browser client registers a family and synchronizes progress', async () => {
   await withServer(async (baseUrl) => {
     const client = createApiClient(createCookieFetch(baseUrl));
-    const user = await client.register('family@example.com', 'family-password-123');
-    assert.deepEqual(user, { email: 'family@example.com' });
+    const user = await client.register('family@example.com', 'family-password-123', CHILDREN);
+    assert.equal(user.email, 'family@example.com');
+    assert.deepEqual(user.children.map(({ name, age }) => ({ name, age })), CHILDREN);
     assert.deepEqual(await client.getCurrentUser(), user);
 
-    const state = { completed: [1, 2], observations: { 2: { teen: { note: 'Сделала две версии' } } } };
+    const state = { completed: [1, 2], observations: { 2: { [user.children[1].id]: { note: 'Сделала две версии', feeling: '', signals: ['improved'] } } } };
     assert.deepEqual(await client.saveProgress(state), state);
     assert.deepEqual(await client.getProgress(), state);
+  });
+});
+
+test('browser client updates the family profile', async () => {
+  await withServer(async (baseUrl) => {
+    const client = createApiClient(createCookieFetch(baseUrl));
+    const user = await client.register('old@example.com', 'family-password-123', CHILDREN);
+    const children = [
+      { ...user.children[0], name: 'Лёва', age: 8 },
+      user.children[1]
+    ];
+    const updated = await client.updateProfile('new@example.com', children);
+    assert.equal(updated.email, 'new@example.com');
+    assert.deepEqual(updated.children, children);
+    assert.deepEqual(await client.getCurrentUser(), updated);
   });
 });
 
 test('browser client publishes, reads and deletes a result', async () => {
   await withServer(async (baseUrl) => {
     const client = createApiClient(createCookieFetch(baseUrl));
-    await client.register('manage@example.com', 'family-password-123');
+    await client.register('manage@example.com', 'family-password-123', CHILDREN);
     const saved = await client.createResult({
       weekId: 6,
       audience: 'family',
@@ -75,10 +92,10 @@ test('browser client publishes, reads and deletes a result', async () => {
 test('browser client saves and lists a family result', async () => {
   await withServer(async (baseUrl) => {
     const client = createApiClient(createCookieFetch(baseUrl));
-    await client.register('works@example.com', 'family-password-123');
+    const user = await client.register('works@example.com', 'family-password-123', CHILDREN);
     const saved = await client.createResult({
       weekId: 4,
-      audience: 'teen',
+      audience: user.children[1].id,
       description: 'Сделали афишу',
       feeling: 'Хочу ещё',
       nextIdea: 'Поменять шрифт',

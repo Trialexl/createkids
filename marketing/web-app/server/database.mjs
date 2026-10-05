@@ -48,5 +48,9 @@ export function createDatabase(dataDir) {
     CREATE INDEX IF NOT EXISTS results_user_id ON results(user_id);
     CREATE INDEX IF NOT EXISTS results_published ON results(is_published, created_at DESC);
   `);
+  const userColumns = db.prepare('PRAGMA table_info(users)').all();
+  if (!userColumns.some((column) => column.name === 'children_json')) {
+    db.exec("ALTER TABLE users ADD COLUMN children_json TEXT NOT NULL DEFAULT '[]'");
+  }
   return db;
 }

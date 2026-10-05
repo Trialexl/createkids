@@ -9,6 +9,11 @@ export const weeks = [
     family: 'Собрать музей одного бытового предмета и придумать к нему музейную подпись.',
     artifact: 'Лист персонажей, фотосерия и фотография мини-музея.',
     tip: 'Заведите копилку вдохновения: сохраняйте не всё подряд, а конкретную зацепившую деталь.',
+    guide: [
+      'До начала предложите самому выбрать предметы, комнату или маршрут наблюдения.',
+      'Спрашивайте «Что здесь тебя зацепило?» вместо «Красиво получилось?».',
+      'Если идеи закончились, предложите изменить масштаб, свет или точку зрения, но не подсказывайте готовый образ.'
+    ],
     image: '/week-slides/alternatives/week-01-watercolor-a.jpg',
     images: ['/week-slides/week-01.jpg', '/week-slides/alternatives/week-01-watercolor-a.jpg', '/week-slides/alternatives/week-01-watercolor-b.jpg'],
     color: 'coral',
@@ -24,6 +29,11 @@ export const weeks = [
     family: 'По очереди продолжать общий рисунок, не договариваясь о результате.',
     artifact: 'Три варианта до выбора финальной версии.',
     tip: 'Найдите три непохожих референса и возьмите из каждого только один приём.',
+    guide: [
+      'Подготовьте ограниченный набор материалов: ограничение помогает начать и не мешает авторскому выбору.',
+      'Предложите сделать несколько вариантов до выбора любимого — первый не обязан быть финальным.',
+      'Не исправляйте пропорции и композицию; лучше спросите, что ребёнок хотел выделить.'
+    ],
     image: '/week-slides/alternatives/week-02-watercolor-a.jpg',
     images: ['/week-slides/week-02.jpg', '/week-slides/alternatives/week-02-watercolor-a.jpg', '/week-slides/alternatives/week-02-watercolor-b.jpg'],
     color: 'sky',
@@ -39,6 +49,11 @@ export const weeks = [
     family: 'Рассказывать историю по одной фразе, затем придумать вторую концовку.',
     artifact: 'Аудиозапись или текст вместе с черновиком.',
     tip: 'Начните с фразы: «Мне не хватает истории, в которой…».',
+    guide: [
+      'Разложите случайные слова или картинки так, чтобы ребёнок сам выбрал порядок.',
+      'Если сюжет остановился, спросите: «Чего хочет герой и что ему мешает?».',
+      'Разрешите рассказать историю устно или записать аудио; правописание сейчас не является целью.'
+    ],
     image: '/week-slides/alternatives/week-03-watercolor-a.jpg',
     images: ['/week-slides/week-03.jpg', '/week-slides/alternatives/week-03-watercolor-a.jpg', '/week-slides/alternatives/week-03-watercolor-b.jpg'],
     color: 'paper',
@@ -54,6 +69,11 @@ export const weeks = [
     family: 'Озвучить немую сцену голосом, предметами и собственными звуками.',
     artifact: 'Аудиозапись первой и второй версии.',
     tip: 'Соедините ритм из одного источника, фактуру из второго и форму из третьего.',
+    guide: [
+      'Сначала минуту послушайте пространство и соберите звуки, не оценивая их как музыкальные или шумные.',
+      'Договоритесь о комфортной громкости и простом сигнале остановки.',
+      'После первой записи спросите, где хочется добавить тишину, повтор или контраст.'
+    ],
     image: '/week-slides/alternatives/week-04-watercolor-a.jpg',
     images: ['/week-slides/week-04.jpg', '/week-slides/alternatives/week-04-watercolor-a.jpg', '/week-slides/alternatives/week-04-watercolor-b.jpg'],
     color: 'lime',
@@ -69,6 +89,11 @@ export const weeks = [
     family: 'Собрать машину Голдберга минимум из пяти последовательных действий.',
     artifact: 'Фото прототипов и короткий список изменений.',
     tip: 'Руки до экрана: сначала физическая попытка, затем поиск готовых решений.',
+    guide: [
+      'Заранее отделите безопасные материалы и обозначьте только реальные ограничения.',
+      'Позвольте первой конструкции не сработать; спросите, где она гнётся, падает или застревает.',
+      'Фотографируйте версии до ремонта, а решение не перестраивайте руками взрослого.'
+    ],
     image: '/week-slides/alternatives/week-05-watercolor-a.jpg',
     images: ['/week-slides/week-05.jpg', '/week-slides/alternatives/week-05-watercolor-a.jpg', '/week-slides/alternatives/week-05-watercolor-b.jpg'],
     color: 'soft',
@@ -84,6 +109,11 @@ export const weeks = [
     family: 'Сыграть импровизацию «Да, и…» с необычным местом и задачей.',
     artifact: 'Видео на 1–3 минуты или афиша спектакля.',
     tip: 'Не ждите полной готовности: начните сцену, а характер обнаружится в действии.',
+    guide: [
+      'Начните с короткой разминки движений и голосов без зрителей и требований к результату.',
+      'Принимайте предложения через «Да, и…», не возвращая сцену к своему замыслу.',
+      'Съёмка и показ необязательны: ребёнок может оставить сцену только участникам.'
+    ],
     image: '/week-slides/alternatives/week-06-watercolor-a.jpg',
     images: ['/week-slides/week-06.jpg', '/week-slides/alternatives/week-06-watercolor-a.jpg', '/week-slides/alternatives/week-06-watercolor-b.jpg'],
     color: 'coral',
@@ -99,6 +129,11 @@ export const weeks = [
     family: 'Снять один сюжет сначала как комедию, а затем как триллер.',
     artifact: 'Два коротких ролика и раскадровка.',
     tip: 'Повторите один кадр как упражнение, затем измените героя, место и жанр.',
+    guide: [
+      'Помогите только с устойчивостью камеры и безопасным светом, не режиссируя сюжет.',
+      'Перед съёмкой можно разложить 4–6 кадров на бумаге, если это облегчает старт.',
+      'После первого просмотра спросите, что понятно без объяснений и какой один кадр хочется изменить.'
+    ],
     image: '/week-slides/alternatives/week-07-watercolor-a.jpg',
     images: ['/week-slides/week-07.jpg', '/week-slides/alternatives/week-07-watercolor-a.jpg', '/week-slides/alternatives/week-07-watercolor-b.jpg'],
     color: 'paper',
@@ -114,6 +149,11 @@ export const weeks = [
     family: 'Придумать механику игры, где игрок создаёт или помогает, а не сражается.',
     artifact: 'Ссылка или файл проекта и три возможных улучшения.',
     tip: 'Сначала бумажный прототип, затем экран. Автором правил остаётся ребёнок.',
+    guide: [
+      'Сначала проверьте идею на бумаге: цель, действие пользователя и одно правило.',
+      'Помогайте с инструментом только после того, как ребёнок сформулировал собственное намерение.',
+      'Сразу договоритесь о времени за экраном и не публикуйте проект без отдельного согласия.'
+    ],
     image: '/week-slides/alternatives/week-08-watercolor-a.jpg',
     images: ['/week-slides/week-08.jpg', '/week-slides/alternatives/week-08-watercolor-a.jpg', '/week-slides/alternatives/week-08-watercolor-b.jpg'],
     color: 'sky',
@@ -129,6 +169,11 @@ export const weeks = [
     family: 'Отвечать на звук рисунком, на рисунок движением, а на движение историей.',
     artifact: 'Творческая цепочка минимум из трёх медиумов.',
     tip: 'Соберите формулу из цвета одного автора, ритма другого и сюжета третьего.',
+    guide: [
+      'Ограничьте цепочку тремя переходами, чтобы эксперимент не превратился в бесконечную подготовку.',
+      'После каждого перехода спрашивайте, что сохранилось от исходной идеи, а что стало новым.',
+      'Не требуйте аккуратного финала: ценность задания — в неожиданном переносе между формами.'
+    ],
     image: '/week-slides/alternatives/week-09-watercolor-a.jpg',
     images: ['/week-slides/week-09.jpg', '/week-slides/alternatives/week-09-watercolor-a.jpg', '/week-slides/alternatives/week-09-watercolor-b.jpg'],
     color: 'lime',
@@ -144,6 +189,11 @@ export const weeks = [
     family: 'Протестировать прототип без объяснений и записать наблюдения.',
     artifact: 'Проблема, три идеи, прототип и одно улучшение.',
     tip: 'Начинайте не с предмета, а с вопроса: «Чего не хватает этому человеку?».',
+    guide: [
+      'Во время интервью не подводите человека к готовому решению — собирайте ситуации и неудобства.',
+      'При тестировании попросите автора молчать и наблюдать, где пользователь сомневается.',
+      'После теста выберите одно изменение, а не пытайтесь сразу исправить всё.'
+    ],
     image: '/week-slides/alternatives/week-10-watercolor-a.jpg',
     images: ['/week-slides/week-10.jpg', '/week-slides/alternatives/week-10-watercolor-a.jpg', '/week-slides/alternatives/week-10-watercolor-b.jpg'],
     color: 'soft',
@@ -159,6 +209,11 @@ export const weeks = [
     family: 'Помогать друг другу только по запросу и сохранить отдельное авторство.',
     artifact: 'Минимум три идеи, план, первая версия и одно улучшение.',
     tip: 'Можно продолжить побочный проект, к которому ребёнок возвращался сам.',
+    guide: [
+      'Пусть ребёнок сам определит тему и то, что для него будет считаться законченной версией.',
+      'Договоритесь о редких контрольных точках вместо постоянных напоминаний и проверки.',
+      'Предлагайте конкретную роль — найти материал, подержать, снять — и включайтесь только по запросу.'
+    ],
     image: '/week-slides/alternatives/week-11-watercolor-a.jpg',
     images: ['/week-slides/week-11.jpg', '/week-slides/alternatives/week-11-watercolor-a.jpg', '/week-slides/alternatives/week-11-watercolor-b.jpg'],
     color: 'coral',
@@ -174,12 +229,33 @@ export const weeks = [
     family: 'Собрать выставку, концерт, показ или закрытую цифровую галерею.',
     artifact: 'Финалы, черновики и карта направлений для продолжения.',
     tip: 'Публичность необязательна. Показывать можно не результат, а найденный приём.',
+    guide: [
+      'Сначала спросите, что ребёнок готов показывать, кому и в каком формате.',
+      'Положите рядом с финалом черновик или неудачную версию, если автор согласен рассказать о процессе.',
+      'Завершите вопросами о продолжении без наград, мест, рейтинга и сравнения детей.'
+    ],
     image: '/week-slides/alternatives/week-12-watercolor-a.jpg',
     images: ['/week-slides/week-12.jpg', '/week-slides/alternatives/week-12-watercolor-a.jpg', '/week-slides/alternatives/week-12-watercolor-b.jpg'],
     color: 'paper',
     icon: '○'
   }
 ];
+
+export const assignmentGrades = [
+  { id: 'junior', minAge: 5, maxAge: 10, assignmentKey: 'younger', label: '5–10 лет' },
+  { id: 'senior', minAge: 11, maxAge: 17, assignmentKey: 'teen', label: '11–17 лет' }
+];
+
+export function getAssignmentGrade(age) {
+  const numericAge = Number(age);
+  return assignmentGrades.find((grade) => numericAge >= grade.minAge && numericAge <= grade.maxAge) ?? null;
+}
+
+export function getAssignmentForAge(week, age) {
+  const grade = getAssignmentGrade(age);
+  if (!week || !grade) return null;
+  return { ...grade, text: week[grade.assignmentKey] };
+}
 
 export function getWeekById(id) {
   return weeks.find((week) => week.id === Number(id)) ?? null;

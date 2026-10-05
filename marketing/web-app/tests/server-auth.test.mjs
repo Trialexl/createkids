@@ -34,23 +34,58 @@ function sessionCookie(response) {
   return response.headers.get('set-cookie')?.split(';', 1)[0] ?? '';
 }
 
+const CHILDREN = [{ name: 'Лев', age: 7 }, { name: 'Мира', age: 14 }];
+
+test('registration requires at least one child aged 5 to 17', async () => {
+  await withServer(async (baseUrl) => {
+    const missing = await request(baseUrl, '/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ email: 'missing@example.com', password: 'long-family-password' })
+    });
+    assert.equal(missing.status, 400);
+    assert.deepEqual(await missing.json(), { error: 'invalid_children' });
+
+    const invalidAge = await request(baseUrl, '/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: 'age@example.com',
+        password: 'long-family-password',
+        children: [{ name: 'Малыш', age: 4 }]
+      })
+    });
+    assert.equal(invalidAge.status, 400);
+    assert.deepEqual(await invalidAge.json(), { error: 'invalid_children' });
+
+    const manyChildren = await request(baseUrl, '/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: 'many@example.com',
+        password: 'long-family-password',
+        children: Array.from({ length: 6 }, (_, index) => ({ name: `Ребёнок ${index + 1}`, age: 5 + index }))
+      })
+    });
+    assert.equal(manyChildren.status, 201);
+    assert.equal((await manyChildren.json()).user.children.length, 6);
+  });
+});
+
 test('family can register, read its session and log out', async () => {
   await withServer(async (baseUrl) => {
     const registration = await request(baseUrl, '/api/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ email: ' Parent@Example.COM ', password: 'long-family-password' })
+      body: JSON.stringify({ email: ' Parent@Example.COM ', password: 'long-family-password', children: CHILDREN })
     });
 
     assert.equal(registration.status, 201);
     assert.match(registration.headers.get('set-cookie') ?? '', /createkids_session=/);
-    assert.deepEqual(await registration.json(), {
-      user: { email: 'parent@example.com' }
-    });
+    const registrationBody = await registration.json();
+    assert.equal(registrationBody.user.email, 'parent@example.com');
+    assert.deepEqual(registrationBody.user.children.map(({ name, age }) => ({ name, age })), CHILDREN);
 
     const cookie = sessionCookie(registration);
     const me = await request(baseUrl, '/api/auth/me', { headers: { cookie } });
     assert.equal(me.status, 200);
-    assert.deepEqual(await me.json(), { user: { email: 'parent@example.com' } });
+    assert.deepEqual(await me.json(), registrationBody);
 
     const logout = await request(baseUrl, '/api/auth/logout', {
       method: 'POST',
@@ -68,7 +103,7 @@ test('login rejects a wrong password and creates a fresh session for the right o
   await withServer(async (baseUrl) => {
     await request(baseUrl, '/api/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ email: 'family@example.com', password: 'correct-password-123' })
+      body: JSON.stringify({ email: 'family@example.com', password: 'correct-password-123', children: CHILDREN })
     });
 
     const wrong = await request(baseUrl, '/api/auth/login', {
@@ -86,17 +121,65 @@ test('login rejects a wrong password and creates a fresh session for the right o
   });
 });
 
+test('family can edit its email and children without losing archived child progress', async () => {
+  await withServer(async (baseUrl) => {
+    const registration = await request(baseUrl, '/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ email: 'before@example.com', password: 'family-password-123', children: CHILDREN })
+    });
+    const registered = await registration.clone().json();
+    const [firstChild, secondChild] = registered.user.children;
+    const cookie = sessionCookie(registration);
+    const state = {
+      completed: [3],
+      observations: {
+        3: { [secondChild.id]: { note: 'Сохраняем после архивации', feeling: 'Хочу ещё', signals: ['returned'] } }
+      }
+    };
+    await request(baseUrl, '/api/progress', {
+      method: 'PUT',
+      headers: { cookie },
+      body: JSON.stringify(state)
+    });
+
+    const updated = await request(baseUrl, '/api/profile', {
+      method: 'PATCH',
+      headers: { cookie },
+      body: JSON.stringify({
+        email: 'after@example.com',
+        children: [{ id: firstChild.id, name: 'Лёва', age: 8 }]
+      })
+    });
+    assert.equal(updated.status, 200);
+    assert.deepEqual(await updated.json(), {
+      user: { email: 'after@example.com', children: [{ id: firstChild.id, name: 'Лёва', age: 8 }] }
+    });
+
+    const me = await request(baseUrl, '/api/auth/me', { headers: { cookie } });
+    assert.deepEqual(await me.json(), {
+      user: { email: 'after@example.com', children: [{ id: firstChild.id, name: 'Лёва', age: 8 }] }
+    });
+    const progress = await request(baseUrl, '/api/progress', { headers: { cookie } });
+    assert.deepEqual(await progress.json(), state);
+  });
+});
+
 test('authenticated family can save and restore program progress', async () => {
   await withServer(async (baseUrl) => {
     const registration = await request(baseUrl, '/api/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ email: 'progress@example.com', password: 'progress-password-123' })
+      body: JSON.stringify({ email: 'progress@example.com', password: 'progress-password-123', children: CHILDREN })
     });
+    const registrationBody = await registration.clone().json();
+    const childId = registrationBody.user.children[0].id;
     const cookie = sessionCookie(registration);
     const state = {
       completed: [1, 2],
       observations: {
-        2: { younger: { note: 'Сделал вторую версию', feeling: 'Хочу ещё' } }
+        2: {
+          [childId]: { note: 'Сделал вторую версию', feeling: 'Хочу ещё', signals: ['returned', 'improved'] },
+          family: { note: 'Собрали вместе', feeling: 'Достаточно', signals: ['shared'] }
+        }
       }
     };
 

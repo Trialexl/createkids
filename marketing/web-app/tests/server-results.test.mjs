@@ -37,21 +37,30 @@ async function jsonRequest(baseUrl, route, { cookie = '', ...options } = {}) {
 async function register(baseUrl, email) {
   const response = await jsonRequest(baseUrl, '/api/auth/register', {
     method: 'POST',
-    body: JSON.stringify({ email, password: 'family-password-123' })
+    body: JSON.stringify({
+      email,
+      password: 'family-password-123',
+      children: [{ name: 'Лев', age: 7 }, { name: 'Мира', age: 14 }]
+    })
   });
   assert.equal(response.status, 201);
-  return response.headers.get('set-cookie').split(';', 1)[0];
+  const body = await response.json();
+  return {
+    cookie: response.headers.get('set-cookie').split(';', 1)[0],
+    children: body.user.children
+  };
 }
 
 test('family saves a private result and sees it only in its own works', async () => {
   await withServer(async (baseUrl) => {
-    const cookie = await register(baseUrl, 'private@example.com');
+    const family = await register(baseUrl, 'private@example.com');
+    const { cookie } = family;
     const created = await jsonRequest(baseUrl, '/api/results', {
       method: 'POST',
       cookie,
       body: JSON.stringify({
         weekId: 3,
-        audience: 'younger',
+        audience: family.children[0].id,
         description: 'Сочинили историю про летающий дом',
         feeling: 'Хочу ещё',
         nextIdea: 'Добавить второго героя',
@@ -65,6 +74,7 @@ test('family saves a private result and sees it only in its own works', async ()
     const ownBody = await own.json();
     assert.equal(ownBody.results.length, 1);
     assert.equal(ownBody.results[0].description, 'Сочинили историю про летающий дом');
+    assert.equal(ownBody.results[0].audienceLabel, 'Лев');
 
     const gallery = await jsonRequest(baseUrl, '/api/gallery', { cookie });
     assert.deepEqual(await gallery.json(), { results: [] });
@@ -73,14 +83,15 @@ test('family saves a private result and sees it only in its own works', async ()
 
 test('family can publish a result anonymously and another signed-in family can view it', async () => {
   await withServer(async (baseUrl) => {
-    const authorCookie = await register(baseUrl, 'author@example.com');
-    const viewerCookie = await register(baseUrl, 'viewer@example.com');
+    const author = await register(baseUrl, 'author@example.com');
+    const { cookie: authorCookie } = author;
+    const { cookie: viewerCookie } = await register(baseUrl, 'viewer@example.com');
     const created = await jsonRequest(baseUrl, '/api/results', {
       method: 'POST',
       cookie: authorCookie,
       body: JSON.stringify({
         weekId: 8,
-        audience: 'family',
+        audience: author.children[0].id,
         description: 'Сделали бумажный прототип игры',
         feeling: 'Хочу иначе',
         nextIdea: 'Добавить совместный режим',
@@ -105,6 +116,8 @@ test('family can publish a result anonymously and another signed-in family can v
     const galleryBody = await gallery.json();
     assert.equal(galleryBody.results.length, 1);
     assert.equal(galleryBody.results[0].description, 'Сделали бумажный прототип игры');
+    assert.equal(galleryBody.results[0].audienceLabel, 'Ребёнок · 7 лет');
+    assert.doesNotMatch(galleryBody.results[0].audienceLabel, /Лев/);
     assert.equal('email' in galleryBody.results[0], false);
     assert.equal('userId' in galleryBody.results[0], false);
 
@@ -117,13 +130,14 @@ test('family can publish a result anonymously and another signed-in family can v
 
 test('family can delete its result and its photo', async () => {
   await withServer(async (baseUrl) => {
-    const cookie = await register(baseUrl, 'delete@example.com');
+    const family = await register(baseUrl, 'delete@example.com');
+    const { cookie } = family;
     const created = await jsonRequest(baseUrl, '/api/results', {
       method: 'POST',
       cookie,
       body: JSON.stringify({
         weekId: 5,
-        audience: 'teen',
+        audience: family.children[1].id,
         description: 'Собрали прототип органайзера',
         feeling: 'Достаточно',
         nextIdea: '',

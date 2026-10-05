@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  getAssignmentForAge,
   getCurrentWeek,
   getProgress,
   getWeekById,
@@ -24,6 +25,9 @@ test('program contains twelve complete weeks', () => {
     assert.ok(week.teen);
     assert.ok(week.family);
     assert.ok(week.artifact);
+    assert.ok(week.tip);
+    assert.equal(week.guide.length, 3);
+    assert.ok(week.guide.every((tip) => typeof tip === 'string' && tip.length > 20));
     assert.ok(week.color);
     const index = String(week.id).padStart(2, '0');
     assert.equal(week.image, `/week-slides/alternatives/week-${index}-watercolor-a.jpg`);
@@ -33,6 +37,14 @@ test('program contains twelve complete weeks', () => {
       `/week-slides/alternatives/week-${index}-watercolor-b.jpg`
     ]);
   }
+});
+
+test('assignments are selected by an explicit age range', () => {
+  assert.equal(getAssignmentForAge(weeks[0], 7).assignmentKey, 'younger');
+  assert.equal(getAssignmentForAge(weeks[0], 10).label, '5–10 лет');
+  assert.equal(getAssignmentForAge(weeks[0], 11).assignmentKey, 'teen');
+  assert.equal(getAssignmentForAge(weeks[0], 17).label, '11–17 лет');
+  assert.equal(getAssignmentForAge(weeks[0], 4), null);
 });
 
 test('toggleCompletedWeek adds and removes a week without mutating input', () => {
